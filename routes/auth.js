@@ -31,7 +31,7 @@ router.post('/login', async (req, res, next) => {
   }
 });
 
-router.get('/logout', async (req, res, next) => {
+router.post('/logout', async (req, res, next) => {
   try {
     const user = await User.findOne({ where: { user_id: req.body.user_id } });
     if (user) {
