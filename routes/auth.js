@@ -12,17 +12,20 @@ router.post('/login', async (req, res, next) => {
       if (bcrypt.compareSync(req.body.user_pw, user.user_pw)) {
         await Person.update({ state_id: 1 }, { where: { id: user.person_id } });
 
-        return res.json({ message: 'login succeeded!', result: 101 });
+        return res.status(200).json({
+          code: 200,
+          message: 'login succeeded!',
+        });
       } else {
-        return res.json({
+        return res.status(400).json({
+          code: 400,
           message: 'login failed! password is wrong!',
-          result: 102,
         });
       }
     } else {
-      return res.json({
+      return res.status(404).json({
+        code: 404,
         message: "login failed! such user doesn't exist!",
-        result: 103,
       });
     }
   } catch (error) {
@@ -37,11 +40,14 @@ router.post('/logout', async (req, res, next) => {
     if (user) {
       await Person.update({ state_id: 2 }, { where: { id: user.person_id } });
 
-      return res.json({ message: 'logout succeeded!', result: 301 });
+      return res.status(200).json({
+        code: 200,
+        message: 'logout succeeded!',
+      });
     } else {
-      return res.json({
+      return res.status(404).json({
+        code: 404,
         message: "logout failed! such user doesn't exist!",
-        result: 302,
       });
     }
   } catch (error) {
@@ -54,7 +60,10 @@ router.post('/register', async (req, res, next) => {
   try {
     const exUser = await User.findOne({ where: { user_id: req.body.user_id } });
     if (exUser) {
-      return res.json({ message: 'register failed!', result: 202 });
+      return res.status(409).json({
+        code: 409,
+        message: 'register failed! such user already exists!',
+      });
     }
 
     const hash = await bcrypt.hash(req.body.user_pw, 12);
@@ -62,14 +71,17 @@ router.post('/register', async (req, res, next) => {
       name: req.body.name,
       phone: req.body.phone,
       state_id: 2,
-      type_id: 1,
+      type_id: req.body.type_id,
     });
     await User.create({
       user_id: req.body.user_id,
       user_pw: hash,
       person_id: person.id,
     });
-    return res.json({ message: 'register succeeded!', result: 201 });
+    return res.status(201).json({
+      code: 201,
+      message: 'register succeeded!',
+    });
   } catch (error) {
     console.error(error);
     return next(error);
