@@ -12,15 +12,19 @@ router.post('/login', async (req, res, next) => {
     if (user) {
       if (bcrypt.compareSync(req.body.user_pw, user.user_pw)) {
         const person = await Person.findOne({ where: { id: user.person_id } });
-        if (person.state_id != 2) {
+        if (person.state_id == 2) {
           return res.json({
-            code: 400,
+            code: 401,
             message: 'login failed! you have already logged-in!',
           });
         }
 
-        await Person.update({ state_id: 1 }, { where: { id: user.person_id } });
-
+        await User.update(
+          { ip: req.ip.split(':').pop() },
+          { where: { id: user.id } }
+        );
+        await Person.update({ state_id: 2 }, { where: { id: user.person_id } });
+        console.log(`client ip : ${req.ip}`);
         return res.json({
           code: 200,
           message: 'login succeeded!',
@@ -49,14 +53,14 @@ router.post('/logout', async (req, res, next) => {
     const user = await User.findOne({ where: { user_id: req.body.user_id } });
     if (user) {
       const person = await Person.findOne({ where: { id: user.person_id } });
-      if (person.state_id != 1) {
+      if (person.state_id == 1) {
         return res.json({
-          code: 400,
+          code: 401,
           message: 'logout failed! you have already logged-out!',
         });
       }
 
-      await Person.update({ state_id: 2 }, { where: { id: user.person_id } });
+      await Person.update({ state_id: 1 }, { where: { id: user.person_id } });
 
       return res.json({
         code: 200,
@@ -88,7 +92,7 @@ router.post('/register', async (req, res, next) => {
     const person = await Person.create({
       name: req.body.name,
       phone: req.body.phone,
-      state_id: 2,
+      state_id: 1,
       type_id: req.body.type_id,
     });
     await User.create({

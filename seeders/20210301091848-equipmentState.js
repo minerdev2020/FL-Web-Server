@@ -9,10 +9,10 @@ module.exports = {
           name: 'running',
         },
         {
-          name: 'stoped',
+          name: 'under repair',
         },
         {
-          name: 'under repair',
+          name: 'stoped',
         },
       ],
       {}

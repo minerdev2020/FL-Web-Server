@@ -1,9 +1,23 @@
-const { Person } = require('../models');
+const { User, Person, PersonState, PersonType } = require('../models');
 
 module.exports = class PersonController {
   static async show(req, res, next) {
     try {
       const result = await Person.findOne({
+        include: [
+          {
+            model: User,
+            attributes: ['user_id', 'ip'],
+          },
+          {
+            model: PersonState,
+            attributes: ['name'],
+          },
+          {
+            model: PersonType,
+            attributes: ['name'],
+          },
+        ],
         where: { id: req.params.id },
       });
       const length = result !== null ? 1 : 0;
@@ -26,7 +40,22 @@ module.exports = class PersonController {
 
   static async showAll(req, res, next) {
     try {
-      const result = await Person.findAll({});
+      const result = await Person.findAll({
+        include: [
+          {
+            model: User,
+            attributes: ['user_id', 'ip'],
+          },
+          {
+            model: PersonState,
+            attributes: ['name'],
+          },
+          {
+            model: PersonType,
+            attributes: ['name'],
+          },
+        ],
+      });
       res.json({
         code: 200,
         message: `selected ${result.length} rows`,

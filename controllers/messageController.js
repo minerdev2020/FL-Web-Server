@@ -1,9 +1,23 @@
-const { Message } = require('../models');
+const { Person, Message, MessageState, MessageType } = require('../models');
 
 module.exports = class MessageController {
   static async show(req, res, next) {
     try {
       const result = await Message.findOne({
+        include: [
+          {
+            model: MessageState,
+            attributes: ['name'],
+          },
+          {
+            model: MessageType,
+            attributes: ['name'],
+          },
+          {
+            model: Person,
+            attributes: ['name'],
+          },
+        ],
         where: { id: req.params.id },
       });
       const length = result !== null ? 1 : 0;
@@ -26,7 +40,23 @@ module.exports = class MessageController {
 
   static async showAll(req, res, next) {
     try {
-      const result = await Message.findAll({});
+      const result = await Message.findAll({
+        include: [
+          {
+            model: MessageState,
+            attributes: ['name'],
+          },
+          {
+            model: MessageType,
+            attributes: ['name'],
+          },
+          {
+            model: Person,
+            as: 'From',
+            attributes: ['name'],
+          },
+        ],
+      });
       res.json({
         code: 200,
         message: `selected ${result.length} rows`,

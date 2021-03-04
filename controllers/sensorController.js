@@ -1,9 +1,19 @@
-const { Sensor } = require('../models');
+const { Sensor, SensorState, SensorType } = require('../models');
 
 module.exports = class SensorController {
   static async show(req, res, next) {
     try {
       const result = await Sensor.findOne({
+        include: [
+          {
+            model: SensorState,
+            attributes: ['name'],
+          },
+          {
+            model: SensorType,
+            attributes: ['name'],
+          },
+        ],
         where: { id: req.params.id },
       });
       const length = result !== null ? 1 : 0;
@@ -26,7 +36,18 @@ module.exports = class SensorController {
 
   static async showAll(req, res, next) {
     try {
-      const result = await Sensor.findAll({});
+      const result = await Sensor.findAll({
+        include: [
+          {
+            model: SensorState,
+            attributes: ['name'],
+          },
+          {
+            model: SensorType,
+            attributes: ['name'],
+          },
+        ],
+      });
       res.json({
         code: 200,
         message: `selected ${result.length} rows`,

@@ -6,10 +6,10 @@ module.exports = {
       'person_states',
       [
         {
-          name: 'online',
+          name: 'offline',
         },
         {
-          name: 'offline',
+          name: 'online',
         },
       ],
       {}

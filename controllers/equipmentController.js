@@ -1,9 +1,19 @@
-const { Equipment } = require('../models');
+const { Equipment, EquipmentState, EquipmentType } = require('../models');
 
 module.exports = class EquipmentController {
   static async show(req, res, next) {
     try {
       const result = await Equipment.findOne({
+        include: [
+          {
+            model: EquipmentState,
+            attributes: ['name'],
+          },
+          {
+            model: EquipmentType,
+            attributes: ['name'],
+          },
+        ],
         where: { id: req.params.id },
       });
       const length = result !== null ? 1 : 0;
@@ -26,7 +36,18 @@ module.exports = class EquipmentController {
 
   static async showAll(req, res, next) {
     try {
-      const result = await Equipment.findAll({});
+      const result = await Equipment.findAll({
+        include: [
+          {
+            model: EquipmentState,
+            attributes: ['name'],
+          },
+          {
+            model: EquipmentType,
+            attributes: ['name'],
+          },
+        ],
+      });
       res.json({
         code: 200,
         message: `selected ${result.length} rows`,
