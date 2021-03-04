@@ -6,10 +6,10 @@ module.exports = {
       'person_states',
       [
         {
-          name: 'offline',
+          name: '下线',
         },
         {
-          name: 'online',
+          name: '上线',
         },
       ],
       {}

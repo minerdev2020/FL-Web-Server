@@ -6,13 +6,13 @@ module.exports = {
       'sensor_states',
       [
         {
-          name: 'running',
+          name: '运行中',
         },
         {
-          name: 'stoped',
+          name: '维修中',
         },
         {
-          name: 'under repair',
+          name: '停用',
         },
       ],
       {}

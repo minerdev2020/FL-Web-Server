@@ -6,13 +6,13 @@ module.exports = {
       'message_states',
       [
         {
-          name: 'waiting',
+          name: '等待中',
         },
         {
-          name: 'proceeding',
+          name: '进行中',
         },
         {
-          name: 'done',
+          name: '已完成',
         },
       ],
       {}

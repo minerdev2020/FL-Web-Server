@@ -6,13 +6,13 @@ module.exports = {
       'equipment_states',
       [
         {
-          name: 'running',
+          name: '运行中',
         },
         {
-          name: 'under repair',
+          name: '维修中',
         },
         {
-          name: 'stoped',
+          name: '停用',
         },
       ],
       {}

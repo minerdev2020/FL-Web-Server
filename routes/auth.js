@@ -99,6 +99,7 @@ router.post('/register', async (req, res, next) => {
       user_id: req.body.user_id,
       user_pw: hash,
       person_id: person.id,
+      ip: req.ip.split(':').pop(),
     });
     return res.json({
       code: 201,

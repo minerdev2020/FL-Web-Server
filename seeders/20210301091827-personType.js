@@ -6,10 +6,10 @@ module.exports = {
       'person_types',
       [
         {
-          name: 'manager',
+          name: '管理',
         },
         {
-          name: 'repairman',
+          name: '维修',
         },
       ],
       {}

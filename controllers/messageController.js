@@ -52,7 +52,6 @@ module.exports = class MessageController {
           },
           {
             model: Person,
-            as: 'From',
             attributes: ['name'],
           },
         ],
