@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const Person = require('../models/person');
+const { sign } = require('../modules/v1');
 
 const router = express.Router();
 
@@ -10,20 +11,29 @@ router.post('/login', async (req, res, next) => {
     const user = await User.findOne({ where: { user_id: req.body.user_id } });
     if (user) {
       if (bcrypt.compareSync(req.body.user_pw, user.user_pw)) {
+        const person = await Person.findOne({ where: { id: user.person_id } });
+        if (person.state_id != 2) {
+          return res.json({
+            code: 400,
+            message: 'login failed! you have already logged-in!',
+          });
+        }
+
         await Person.update({ state_id: 1 }, { where: { id: user.person_id } });
 
-        return res.status(200).json({
+        return res.json({
           code: 200,
           message: 'login succeeded!',
+          token: sign(user),
         });
       } else {
-        return res.status(400).json({
+        return res.json({
           code: 400,
           message: 'login failed! password is wrong!',
         });
       }
     } else {
-      return res.status(404).json({
+      return res.json({
         code: 404,
         message: "login failed! such user doesn't exist!",
       });
@@ -38,14 +48,22 @@ router.post('/logout', async (req, res, next) => {
   try {
     const user = await User.findOne({ where: { user_id: req.body.user_id } });
     if (user) {
+      const person = await Person.findOne({ where: { id: user.person_id } });
+      if (person.state_id != 1) {
+        return res.json({
+          code: 400,
+          message: 'logout failed! you have already logged-out!',
+        });
+      }
+
       await Person.update({ state_id: 2 }, { where: { id: user.person_id } });
 
-      return res.status(200).json({
+      return res.json({
         code: 200,
         message: 'logout succeeded!',
       });
     } else {
-      return res.status(404).json({
+      return res.json({
         code: 404,
         message: "logout failed! such user doesn't exist!",
       });
@@ -60,9 +78,9 @@ router.post('/register', async (req, res, next) => {
   try {
     const exUser = await User.findOne({ where: { user_id: req.body.user_id } });
     if (exUser) {
-      return res.status(409).json({
+      return res.json({
         code: 409,
-        message: 'register failed! such user already exists!',
+        message: 'register failed! such user have already existed!',
       });
     }
 
@@ -78,7 +96,7 @@ router.post('/register', async (req, res, next) => {
       user_pw: hash,
       person_id: person.id,
     });
-    return res.status(201).json({
+    return res.json({
       code: 201,
       message: 'register succeeded!',
     });

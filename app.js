@@ -40,7 +40,10 @@ function main() {
     console.log(res.locals.message);
     console.log(res.locals.error);
     res.status(err.status || 500);
-    res.send(res.locals);
+    res.json({
+      code: err.status,
+      message: err.message,
+    });
   });
 
   app.listen(app.get('port'), () => {

@@ -8,13 +8,16 @@ module.exports = class SensorController {
       });
       const length = result !== null ? 1 : 0;
       if (result)
-        res.status(200).json({
+        res.json({
           code: 200,
           message: `selected ${length} rows`,
           data: result,
         });
       else
-        res.status(404).json({ code: 404, message: "such id dose't exist!" });
+        res.json({
+          code: 404,
+          message: "such id dose't exist!",
+        });
     } catch (err) {
       console.error(err);
       next(err);
@@ -24,7 +27,7 @@ module.exports = class SensorController {
   static async showAll(req, res, next) {
     try {
       const result = await Sensor.findAll({});
-      res.status(200).json({
+      res.json({
         code: 200,
         message: `selected ${result.length} rows`,
         data: result,
@@ -40,7 +43,7 @@ module.exports = class SensorController {
       console.log(req.body);
       const result = await Sensor.create(req.body);
       const length = result !== null ? 1 : 0;
-      res.status(201).json({
+      res.json({
         code: 201,
         message: `created ${length} rows`,
         data: result,
@@ -58,9 +61,15 @@ module.exports = class SensorController {
         where: { id: req.params.id },
       });
       if (result)
-        res.status(200).json({ code: 200, message: `updated ${result} rows` });
+        res.json({
+          code: 200,
+          message: `updated ${result} rows`,
+        });
       else
-        res.status(404).json({ code: 404, message: "such id dose't exist!" });
+        res.json({
+          code: 404,
+          message: "such id dose't exist!",
+        });
     } catch (err) {
       console.error(err);
       next(err);
@@ -73,9 +82,15 @@ module.exports = class SensorController {
         where: { id: req.params.id },
       });
       if (result)
-        res.status(204).json({ code: 204, message: `deleted ${result} rows` });
+        res.json({
+          code: 204,
+          message: `deleted ${result} rows`,
+        });
       else
-        res.status(404).json({ code: 404, message: "such id dose't exist!" });
+        res.json({
+          code: 404,
+          message: "such id dose't exist!",
+        });
     } catch (err) {
       console.error(err);
       next(err);
@@ -85,7 +100,10 @@ module.exports = class SensorController {
   static async deleteAll(req, res, next) {
     try {
       const result = await Sensor.destroy({});
-      res.status(204).json({ code: 204, message: `deleted ${result} rows` });
+      res.json({
+        code: 204,
+        message: `deleted ${result} rows`,
+      });
     } catch (err) {
       console.error(err);
       next(err);
