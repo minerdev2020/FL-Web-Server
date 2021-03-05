@@ -34,9 +34,4 @@ router.delete('/:id', verifyToken, (req, res, next) =>
   sensorController.delete(req, res, next)
 );
 
-// delete all sensor info
-router.delete('/', verifyToken, (req, res, next) =>
-  sensorController.deleteAll(req, res, next)
-);
-
 module.exports = router;

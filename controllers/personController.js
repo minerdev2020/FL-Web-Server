@@ -107,32 +107,22 @@ module.exports = class PersonController {
 
   static async delete(req, res, next) {
     try {
+      await User.destroy({
+        where: { person_id: req.params.id },
+      });
       const result = await Person.destroy({
         where: { id: req.params.id },
       });
-      if (result)
+      if (result) {
         res.json({
           code: 204,
           message: `deleted ${result} rows`,
         });
-      else
+      } else
         res.json({
           code: 404,
           message: "such id dose't exist!",
         });
-    } catch (err) {
-      console.error(err);
-      next(err);
-    }
-  }
-
-  static async deleteAll(req, res, next) {
-    try {
-      const result = await Person.destroy({});
-      res.json({
-        code: 204,
-        message: `deleted ${result} rows`,
-      });
     } catch (err) {
       console.error(err);
       next(err);

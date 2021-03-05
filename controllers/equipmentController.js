@@ -117,17 +117,4 @@ module.exports = class EquipmentController {
       next(err);
     }
   }
-
-  static async deleteAll(req, res, next) {
-    try {
-      const result = await Equipment.destroy({});
-      res.json({
-        code: 204,
-        message: `deleted ${result} rows`,
-      });
-    } catch (err) {
-      console.error(err);
-      next(err);
-    }
-  }
 };

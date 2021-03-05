@@ -34,9 +34,4 @@ router.delete('/:id', verifyToken, (req, res, next) =>
   equipmentController.delete(req, res, next)
 );
 
-// delete all equipment info
-router.delete('/', verifyToken, (req, res, next) =>
-  equipmentController.deleteAll(req, res, next)
-);
-
 module.exports = router;

@@ -34,9 +34,4 @@ router.delete('/:id', verifyToken, (req, res, next) =>
   messageController.delete(req, res, next)
 );
 
-// delete all message info
-router.delete('/', verifyToken, (req, res, next) =>
-  messageController.deleteAll(req, res, next)
-);
-
 module.exports = router;

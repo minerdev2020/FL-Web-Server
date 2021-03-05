@@ -117,17 +117,4 @@ module.exports = class SensorController {
       next(err);
     }
   }
-
-  static async deleteAll(req, res, next) {
-    try {
-      const result = await Sensor.destroy({});
-      res.json({
-        code: 204,
-        message: `deleted ${result} rows`,
-      });
-    } catch (err) {
-      console.error(err);
-      next(err);
-    }
-  }
 };

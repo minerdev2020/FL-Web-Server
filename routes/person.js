@@ -34,9 +34,4 @@ router.delete('/:id', verifyToken, (req, res, next) =>
   PersonController.delete(req, res, next)
 );
 
-// delete all person info
-router.delete('/', verifyToken, (req, res, next) =>
-  PersonController.deleteAll(req, res, next)
-);
-
 module.exports = router;
