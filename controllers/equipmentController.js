@@ -1,4 +1,11 @@
-const { Equipment, EquipmentState, EquipmentType } = require('../models');
+const {
+  Equipment,
+  EquipmentState,
+  EquipmentType,
+  Sensor,
+  SensorState,
+  SensorType,
+} = require('../models');
 
 module.exports = class EquipmentController {
   static async show(req, res, next) {
@@ -12,6 +19,19 @@ module.exports = class EquipmentController {
           {
             model: EquipmentType,
             attributes: ['name'],
+          },
+          {
+            model: Sensor,
+            include: [
+              {
+                model: SensorState,
+                attributes: ['name'],
+              },
+              {
+                model: SensorType,
+                attributes: ['name'],
+              },
+            ],
           },
         ],
         where: { id: req.params.id },
@@ -45,6 +65,20 @@ module.exports = class EquipmentController {
           {
             model: EquipmentType,
             attributes: ['name'],
+          },
+          {
+            model: Sensor,
+            attributes: ['name', 'model_number'],
+            include: [
+              {
+                model: SensorState,
+                attributes: ['name'],
+              },
+              {
+                model: SensorType,
+                attributes: ['name'],
+              },
+            ],
           },
         ],
       });
@@ -99,6 +133,9 @@ module.exports = class EquipmentController {
 
   static async delete(req, res, next) {
     try {
+      await Sensor.destroy({
+        where: { parent_id: req.params.id },
+      });
       const result = await Equipment.destroy({
         where: { id: req.params.id },
       });

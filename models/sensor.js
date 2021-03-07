@@ -8,7 +8,7 @@ module.exports = class Sensor extends Sequelize.Model {
           type: Sequelize.STRING(20),
           allowNull: false,
         },
-        number: {
+        model_number: {
           type: Sequelize.STRING(15),
           allowNull: false,
         },

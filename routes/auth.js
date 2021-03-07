@@ -1,8 +1,19 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const User = require('../models/user');
-const Person = require('../models/person');
 const { sign } = require('../modules/v1');
+const { verifyToken } = require('../middlewares/auth');
+const {
+  User,
+  Person,
+  PersonState,
+  PersonType,
+  EquipmentState,
+  EquipmentType,
+  SensorState,
+  SensorType,
+  MessageState,
+  MessageType,
+} = require('../models');
 
 const router = express.Router();
 
@@ -104,6 +115,53 @@ router.post('/register', async (req, res, next) => {
     return res.json({
       code: 201,
       message: 'register succeeded!',
+    });
+  } catch (error) {
+    console.error(error);
+    return next(error);
+  }
+});
+
+router.get('/initialize', verifyToken, async (req, res, next) => {
+  try {
+    const personStates = await PersonState.findAll({
+      attributes: ['name'],
+    });
+    const personTypes = await PersonType.findAll({
+      attributes: ['name'],
+    });
+    const equipmentStates = await EquipmentState.findAll({
+      attributes: ['name'],
+    });
+    const equipmentTypes = await EquipmentType.findAll({
+      attributes: ['name'],
+    });
+    const sensorStates = await SensorState.findAll({
+      attributes: ['name'],
+    });
+    const sensorTypes = await SensorType.findAll({
+      attributes: ['name'],
+    });
+    const messageStates = await MessageState.findAll({
+      attributes: ['name'],
+    });
+    const messageTypes = await MessageType.findAll({
+      attributes: ['name'],
+    });
+
+    return res.json({
+      code: 200,
+      message: 'logout succeeded!',
+      data: {
+        personStates,
+        personTypes,
+        equipmentStates,
+        equipmentTypes,
+        sensorStates,
+        sensorTypes,
+        messageStates,
+        messageTypes,
+      },
     });
   } catch (error) {
     console.error(error);

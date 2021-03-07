@@ -8,7 +8,7 @@ module.exports = class Equipment extends Sequelize.Model {
           type: Sequelize.STRING(20),
           allowNull: false,
         },
-        number: {
+        model_number: {
           type: Sequelize.STRING(15),
           allowNull: false,
         },
@@ -17,6 +17,8 @@ module.exports = class Equipment extends Sequelize.Model {
         sequelize,
         timestamps: true,
         underscored: true,
+        modelName: 'Equipment',
+        tableName: 'equipments',
         paranoid: false,
         charset: 'utf8',
         collate: 'utf8_general_ci',
