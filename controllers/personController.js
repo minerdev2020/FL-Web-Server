@@ -1,6 +1,24 @@
 const { User, Person, PersonState, PersonType } = require('../models');
 
 module.exports = class PersonController {
+  static async showStatesAndTypes(req, res, next) {
+    try {
+      const states = await PersonState.findAll({});
+      const types = await PersonType.findAll({});
+      res.json({
+        code: 200,
+        message: `selected ${states.length + types.length} rows`,
+        data: {
+          states,
+          types,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      next(err);
+    }
+  }
+
   static async show(req, res, next) {
     try {
       const result = await Person.findOne({
@@ -42,10 +60,6 @@ module.exports = class PersonController {
     try {
       const result = await Person.findAll({
         include: [
-          {
-            model: User,
-            attributes: ['user_id', 'ip'],
-          },
           {
             model: PersonState,
             attributes: ['name'],

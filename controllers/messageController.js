@@ -1,6 +1,24 @@
 const { Person, Message, MessageState, MessageType } = require('../models');
 
 module.exports = class MessageController {
+  static async showStatesAndTypes(req, res, next) {
+    try {
+      const states = await MessageState.findAll({});
+      const types = await MessageType.findAll({});
+      res.json({
+        code: 200,
+        message: `selected ${states.length + types.length} rows`,
+        data: {
+          states,
+          types,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      next(err);
+    }
+  }
+
   static async show(req, res, next) {
     try {
       const result = await Message.findOne({

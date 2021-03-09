@@ -4,6 +4,11 @@ const { verifyToken } = require('../middlewares/auth');
 
 const router = express.Router();
 
+// get all message states and types
+router.get('/list', verifyToken, (req, res, next) =>
+  messageController.showStatesAndTypes(req, res, next)
+);
+
 // get all message infos
 router.get('/', verifyToken, (req, res, next) =>
   messageController.showAll(req, res, next)

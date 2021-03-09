@@ -4,6 +4,11 @@ const { verifyToken } = require('../middlewares/auth');
 
 const router = express.Router();
 
+// get all equipment states and types
+router.get('/list', verifyToken, (req, res, next) =>
+  equipmentController.showStatesAndTypes(req, res, next)
+);
+
 // get all equipment infos
 router.get('/', verifyToken, (req, res, next) =>
   equipmentController.showAll(req, res, next)

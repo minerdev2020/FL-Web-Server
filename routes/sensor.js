@@ -4,6 +4,11 @@ const { verifyToken } = require('../middlewares/auth');
 
 const router = express.Router();
 
+// get all sensor states and types
+router.get('/list', verifyToken, (req, res, next) =>
+  sensorController.showStatesAndTypes(req, res, next)
+);
+
 // get all sensor infos
 router.get('/', verifyToken, (req, res, next) =>
   sensorController.showAll(req, res, next)
