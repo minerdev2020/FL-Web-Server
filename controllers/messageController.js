@@ -5,7 +5,7 @@ module.exports = class MessageController {
     try {
       const states = await MessageState.findAll({});
       const types = await MessageType.findAll({});
-      res.json({
+      res.status(200).json({
         code: 200,
         message: `selected ${states.length + types.length} rows`,
         data: {
@@ -40,13 +40,13 @@ module.exports = class MessageController {
       });
       const length = result !== null ? 1 : 0;
       if (result)
-        res.json({
+        res.status(200).json({
           code: 200,
           message: `selected ${length} rows`,
           data: result,
         });
       else
-        res.json({
+        res.status(404).json({
           code: 404,
           message: "such id dose't exist!",
         });
@@ -74,7 +74,7 @@ module.exports = class MessageController {
           },
         ],
       });
-      res.json({
+      res.status(200).json({
         code: 200,
         message: `selected ${result.length} rows`,
         data: result,
@@ -90,7 +90,7 @@ module.exports = class MessageController {
       console.log(req.body);
       const result = await Message.create(req.body);
       const length = result !== null ? 1 : 0;
-      res.json({
+      res.status(201).json({
         code: 201,
         message: `created ${length} rows`,
         data: result,
@@ -108,12 +108,12 @@ module.exports = class MessageController {
         where: { id: req.params.id },
       });
       if (result)
-        res.json({
+        res.status(200).json({
           code: 200,
           message: `updated ${result} rows`,
         });
       else
-        res.json({
+        res.status(404).json({
           code: 404,
           message: "such id dose't exist!",
         });
@@ -129,12 +129,12 @@ module.exports = class MessageController {
         where: { id: req.params.id },
       });
       if (result)
-        res.json({
+        res.status(204).json({
           code: 204,
           message: `deleted ${result} rows`,
         });
       else
-        res.json({
+        res.status(404).json({
           code: 404,
           message: "such id dose't exist!",
         });
