@@ -6,6 +6,8 @@ const {
   SensorState,
   SensorType,
 } = require('../models');
+const sequelize = require('sequelize');
+const Op = sequelize.Op;
 
 module.exports = class EquipmentController {
   static async showStatesAndTypes(req, res, next) {
@@ -74,6 +76,21 @@ module.exports = class EquipmentController {
 
   static async showAll(req, res, next) {
     try {
+      const condition = {};
+      if (req.query.keyword) {
+        condition.name = {
+          [Op.like]: '%' + req.query.keyword + '%',
+        };
+      }
+
+      if (req.query.group1 > 0) {
+        condition.state_id = req.query.group1;
+      }
+
+      if (req.query.group2 > 0) {
+        condition.type_id = req.query.group2;
+      }
+
       const result = await Equipment.findAll({
         include: [
           {
@@ -99,6 +116,7 @@ module.exports = class EquipmentController {
             ],
           },
         ],
+        where: condition,
       });
       res.status(200).json({
         code: 200,

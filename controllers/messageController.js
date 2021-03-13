@@ -1,4 +1,6 @@
 const { Person, Message, MessageState, MessageType } = require('../models');
+const sequelize = require('sequelize');
+const Op = sequelize.Op;
 
 module.exports = class MessageController {
   static async showStatesAndTypes(req, res, next) {
@@ -58,6 +60,19 @@ module.exports = class MessageController {
 
   static async showAll(req, res, next) {
     try {
+      const condition = {};
+      if (req.query.keyword) {
+        condition.from_id = req.query.group1;
+      }
+
+      if (req.query.group1 > 0) {
+        condition.state_id = req.query.group1;
+      }
+
+      if (req.query.group2 > 0) {
+        condition.type_id = req.query.group2;
+      }
+
       const result = await Message.findAll({
         include: [
           {
@@ -73,6 +88,7 @@ module.exports = class MessageController {
             attributes: ['name'],
           },
         ],
+        where: condition,
       });
       res.status(200).json({
         code: 200,
