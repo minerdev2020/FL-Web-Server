@@ -6,13 +6,31 @@ module.exports = {
       'message_types',
       [
         {
-          name: '1',
+          name: '维修申请',
         },
         {
-          name: '2',
+          name: '允许维修',
         },
         {
-          name: '3',
+          name: '拒绝维修',
+        },
+        {
+          name: '停用申请',
+        },
+        {
+          name: '允许停用',
+        },
+        {
+          name: '拒绝停用',
+        },
+        {
+          name: '启动申请',
+        },
+        {
+          name: '允许启动',
+        },
+        {
+          name: '拒绝启动',
         },
       ],
       {}

@@ -28,6 +28,7 @@ router.post('/login', async (req, res, next) => {
           code: 200,
           message: 'login succeeded!',
           data: {
+            id: person.id,
             user_id: user.user_id,
             type_id: person.type_id,
             token: sign(user),

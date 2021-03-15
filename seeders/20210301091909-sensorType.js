@@ -6,13 +6,13 @@ module.exports = {
       'sensor_types',
       [
         {
-          name: '1',
+          name: '气压',
         },
         {
-          name: '2',
+          name: '流速',
         },
         {
-          name: '3',
+          name: '气温',
         },
       ],
       {}

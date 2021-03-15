@@ -6,13 +6,13 @@ module.exports = {
       'equipment_types',
       [
         {
-          name: '1',
+          name: '生产线1',
         },
         {
-          name: '2',
+          name: '生产线2',
         },
         {
-          name: '3',
+          name: '生产线3',
         },
       ],
       {}
