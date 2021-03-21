@@ -14,6 +14,9 @@ module.exports = {
         {
           name: '已完成',
         },
+        {
+          name: '已拒绝',
+        },
       ],
       {}
     );
