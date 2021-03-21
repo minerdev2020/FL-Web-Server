@@ -23,6 +23,7 @@ module.exports = class PersonState extends Sequelize.Model {
     db.PersonState.hasMany(db.Person, {
       foreignKey: 'state_id',
       targetKey: 'id',
+      as: 'state',
     });
   }
 };

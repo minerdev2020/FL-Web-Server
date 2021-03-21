@@ -29,21 +29,31 @@ module.exports = class Person extends Sequelize.Model {
     db.Person.hasOne(db.User, {
       foreignKey: 'person_id',
       sourceKey: 'id',
+      as: 'user_info',
     });
 
     db.Person.hasMany(db.Message, {
       foreignKey: 'from_id',
       sourceKey: 'id',
+      as: 'from',
+    });
+
+    db.Person.hasMany(db.Message, {
+      foreignKey: 'reply_id',
+      sourceKey: 'id',
+      as: 'replyer',
     });
 
     db.Person.belongsTo(db.PersonState, {
       foreignKey: 'state_id',
       targetKey: 'id',
+      as: 'state',
     });
 
     db.Person.belongsTo(db.PersonType, {
       foreignKey: 'type_id',
       targetKey: 'id',
+      as: 'type',
     });
   }
 };

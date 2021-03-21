@@ -26,10 +26,12 @@ module.exports = class SensorController {
           {
             model: SensorState,
             attributes: ['name'],
+            as: 'state',
           },
           {
             model: SensorType,
             attributes: ['name'],
+            as: 'type',
           },
         ],
         where: { id: req.params.id },
@@ -59,10 +61,12 @@ module.exports = class SensorController {
           {
             model: SensorState,
             attributes: ['name'],
+            as: 'state',
           },
           {
             model: SensorType,
             attributes: ['name'],
+            as: 'type',
           },
         ],
       });

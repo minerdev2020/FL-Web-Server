@@ -1,6 +1,5 @@
 const { User, Person, PersonState, PersonType } = require('../models');
 const sequelize = require('sequelize');
-const { condition } = require('sequelize');
 const Op = sequelize.Op;
 
 module.exports = class PersonController {
@@ -29,14 +28,17 @@ module.exports = class PersonController {
           {
             model: User,
             attributes: ['user_id', 'ip'],
+            as: 'user_info',
           },
           {
             model: PersonState,
             attributes: ['name'],
+            as: 'state',
           },
           {
             model: PersonType,
             attributes: ['name'],
+            as: 'type',
           },
         ],
         where: { id: req.params.id },
@@ -83,10 +85,12 @@ module.exports = class PersonController {
           {
             model: PersonState,
             attributes: ['name'],
+            as: 'state',
           },
           {
             model: PersonType,
             attributes: ['name'],
+            as: 'type',
           },
         ],
         where: condition,

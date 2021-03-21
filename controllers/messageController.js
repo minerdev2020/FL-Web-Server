@@ -26,16 +26,24 @@ module.exports = class MessageController {
       const result = await Message.findOne({
         include: [
           {
-            model: MessageState,
+            model: Person,
             attributes: ['name'],
-          },
-          {
-            model: MessageType,
-            attributes: ['name'],
+            as: 'from',
           },
           {
             model: Person,
             attributes: ['name'],
+            as: 'replyer',
+          },
+          {
+            model: MessageState,
+            attributes: ['name'],
+            as: 'state',
+          },
+          {
+            model: MessageType,
+            attributes: ['name'],
+            as: 'type',
           },
         ],
         where: { id: req.params.id },
@@ -76,16 +84,24 @@ module.exports = class MessageController {
       const result = await Message.findAll({
         include: [
           {
-            model: MessageState,
+            model: Person,
             attributes: ['name'],
-          },
-          {
-            model: MessageType,
-            attributes: ['name'],
+            as: 'from',
           },
           {
             model: Person,
             attributes: ['name'],
+            as: 'replyer',
+          },
+          {
+            model: MessageState,
+            attributes: ['name'],
+            as: 'state',
+          },
+          {
+            model: MessageType,
+            attributes: ['name'],
+            as: 'type',
           },
         ],
         where: condition,

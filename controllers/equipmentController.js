@@ -35,21 +35,26 @@ module.exports = class EquipmentController {
           {
             model: EquipmentState,
             attributes: ['name'],
+            as: 'state',
           },
           {
             model: EquipmentType,
             attributes: ['name'],
+            as: 'type',
           },
           {
             model: Sensor,
+            as: 'sensor_info',
             include: [
               {
                 model: SensorState,
                 attributes: ['name'],
+                as: 'state',
               },
               {
                 model: SensorType,
                 attributes: ['name'],
+                as: 'type',
               },
             ],
           },
@@ -96,22 +101,27 @@ module.exports = class EquipmentController {
           {
             model: EquipmentState,
             attributes: ['name'],
+            as: 'state',
           },
           {
             model: EquipmentType,
             attributes: ['name'],
+            as: 'type',
           },
           {
             model: Sensor,
             attributes: ['name', 'model_number'],
+            as: 'sensor_info',
             include: [
               {
                 model: SensorState,
                 attributes: ['name'],
+                as: 'state',
               },
               {
                 model: SensorType,
                 attributes: ['name'],
+                as: 'type',
               },
             ],
           },

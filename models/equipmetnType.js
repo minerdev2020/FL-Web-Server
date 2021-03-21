@@ -23,6 +23,7 @@ module.exports = class EquipmentType extends Sequelize.Model {
     db.EquipmentType.hasMany(db.Equipment, {
       foreignKey: 'type_id',
       sourceKey: 'id',
+      as: 'type',
     });
   }
 };
