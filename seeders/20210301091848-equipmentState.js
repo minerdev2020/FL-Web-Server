@@ -12,7 +12,7 @@ module.exports = {
           name: '维修中',
         },
         {
-          name: '停用',
+          name: '停用中',
         },
       ],
       {}

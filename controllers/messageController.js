@@ -1,6 +1,10 @@
-const { Person, Message, MessageState, MessageType } = require('../models');
-const sequelize = require('sequelize');
-const Op = sequelize.Op;
+const {
+  Person,
+  Message,
+  MessageState,
+  MessageType,
+  Equipment,
+} = require('../models');
 
 module.exports = class MessageController {
   static async showStatesAndTypes(req, res, next) {
@@ -44,6 +48,11 @@ module.exports = class MessageController {
             model: MessageType,
             attributes: ['name'],
             as: 'type',
+          },
+          {
+            model: Equipment,
+            attributes: ['name', 'model_number'],
+            as: 'equipment_info',
           },
         ],
         where: { id: req.params.id },
@@ -103,6 +112,11 @@ module.exports = class MessageController {
             attributes: ['name'],
             as: 'type',
           },
+          {
+            model: Equipment,
+            attributes: ['name', 'model_number'],
+            as: 'equipment_info',
+          },
         ],
         where: condition,
       });
@@ -139,12 +153,35 @@ module.exports = class MessageController {
       const result = await Message.update(req.body, {
         where: { id: req.params.id },
       });
-      if (result)
+      if (result) {
+        // 接受申请
+        if (req.body.state_id == 2) {
+          let new_state_id = 0;
+          switch (req.body.type_id) {
+            case 1: // 维修申请
+              new_state_id = 2; // 维修中
+              break;
+
+            case 2: // 停用申请
+              new_state_id = 3; // 停用中
+              break;
+
+            case 3: // 启动申请
+              new_state_id = 1; // 运行中
+              break;
+          }
+
+          await Equipment.update(
+            { state_id: new_state_id },
+            { where: { id: req.params.id } }
+          );
+        }
+
         res.status(200).json({
           code: 200,
           message: `updated ${result} rows`,
         });
-      else
+      } else
         res.status(404).json({
           code: 404,
           message: "such id dose't exist!",

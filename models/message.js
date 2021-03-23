@@ -20,6 +20,12 @@ module.exports = class Message extends Sequelize.Model {
     );
   }
   static associate(db) {
+    db.Message.belongsTo(db.Equipment, {
+      foreignKey: 'equipment_id',
+      targetKey: 'id',
+      as: 'equipment_info',
+    });
+
     db.Message.belongsTo(db.Person, {
       foreignKey: 'from_id',
       targetKey: 'id',
