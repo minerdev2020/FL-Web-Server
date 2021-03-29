@@ -46,9 +46,12 @@ function main() {
     });
   });
 
-  app.listen(app.get('port'), () => {
+  const server = app.listen(app.get('port'), () => {
     console.log(`Waiting for request in ${app.get('port')} port...`);
   });
+
+  const webSocket = require('./modules/socket');
+  webSocket.apply(server);
 }
 
 function init() {
