@@ -1,7 +1,7 @@
 const SocketIO = require('socket.io');
 
 module.exports = (server) => {
-  const io = SocketIO(server, { path: '/socket.io' });
+  const io = SocketIO(server);
 
   io.on('connection', (socket) => {
     const req = socket.request;
@@ -14,11 +14,9 @@ module.exports = (server) => {
     socket.on('error', (error) => {
       console.error(error);
     });
-    socket.on('reply', (data) => {
-      console.log(data);
-    });
     socket.interval = setInterval(() => {
-      socket.emit('news', 'Hello Socket.IO');
+      console.log('onReceived', ip, socket.id, req.ip, 'Hello Socket.IO');
+      socket.emit('onReceived', 'Hello Socket.IO');
     }, 3000);
   });
 };

@@ -18,6 +18,10 @@ const Message = require('./message');
 const MessageState = require('./messageState');
 const MessageType = require('./messageType');
 
+const Task = require('./task');
+const TaskState = require('./taskState');
+const TaskType = require('./taskType');
+
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config')[env];
 
@@ -43,6 +47,9 @@ const db = {
   Message,
   MessageState,
   MessageType,
+  Task,
+  TaskState,
+  TaskType,
 };
 
 User.init(sequelize);
@@ -58,6 +65,9 @@ SensorType.init(sequelize);
 Message.init(sequelize);
 MessageState.init(sequelize);
 MessageType.init(sequelize);
+Task.init(sequelize);
+TaskState.init(sequelize);
+TaskType.init(sequelize);
 
 User.associate(db);
 Person.associate(db);
@@ -72,5 +82,8 @@ SensorType.associate(db);
 Message.associate(db);
 MessageState.associate(db);
 MessageType.associate(db);
+Task.associate(db);
+TaskState.associate(db);
+TaskType.associate(db);
 
 module.exports = db;

@@ -44,6 +44,12 @@ module.exports = class Person extends Sequelize.Model {
       as: 'replyer',
     });
 
+    db.Person.hasMany(db.Task, {
+      foreignKey: 'repairman_id',
+      sourceKey: 'id',
+      as: 'repairman',
+    });
+
     db.Person.belongsTo(db.PersonState, {
       foreignKey: 'state_id',
       targetKey: 'id',

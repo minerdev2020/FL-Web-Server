@@ -11,6 +11,7 @@ const {
   equipmentRouter,
   sensorRouter,
   messageRouter,
+  taskRouter,
 } = require('./routes');
 
 const app = express();
@@ -25,6 +26,7 @@ function main() {
   app.use('/api/equipments', equipmentRouter);
   app.use('/api/sensors', sensorRouter);
   app.use('/api/messages', messageRouter);
+  app.use('/api/tasks', taskRouter);
 
   // 일치하는 라우터가 없을 경우
   app.use((req, res, next) => {
@@ -51,7 +53,7 @@ function main() {
   });
 
   const webSocket = require('./modules/socket');
-  webSocket.apply(server);
+  webSocket(server);
 }
 
 function init() {

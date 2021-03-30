@@ -1,17 +1,10 @@
-const {
-  Person,
-  Message,
-  MessageState,
-  MessageType,
-  Equipment,
-  Task,
-} = require('../models');
+const { Task, TaskState, TaskType, Equipment } = require('../models');
 
-module.exports = class MessageController {
+module.exports = class TaskController {
   static async showStatesAndTypes(req, res, next) {
     try {
-      const states = await MessageState.findAll({});
-      const types = await MessageType.findAll({});
+      const states = await TaskState.findAll({});
+      const types = await TaskType.findAll({});
       res.status(200).json({
         code: 200,
         message: `selected ${states.length + types.length} rows`,
@@ -28,32 +21,17 @@ module.exports = class MessageController {
 
   static async show(req, res, next) {
     try {
-      const result = await Message.findOne({
+      const result = await Task.findOne({
         include: [
           {
-            model: Person,
-            attributes: ['name'],
-            as: 'from',
-          },
-          {
-            model: Person,
-            attributes: ['name'],
-            as: 'replyer',
-          },
-          {
-            model: MessageState,
+            model: TaskState,
             attributes: ['name'],
             as: 'state',
           },
           {
-            model: MessageType,
+            model: TaskType,
             attributes: ['name'],
             as: 'type',
-          },
-          {
-            model: Equipment,
-            attributes: ['name', 'model_number'],
-            as: 'equipment_info',
           },
         ],
         where: { id: req.params.id },
@@ -78,10 +56,7 @@ module.exports = class MessageController {
 
   static async showAll(req, res, next) {
     try {
-      const condition = {};
-      if (req.query.keyword) {
-        condition.from_id = req.query.group1;
-      }
+      const condition = { repairman_id: req.query.person_id };
 
       if (req.query.group1 > 0) {
         condition.state_id = req.query.group1;
@@ -91,36 +66,25 @@ module.exports = class MessageController {
         condition.type_id = req.query.group2;
       }
 
-      const result = await Message.findAll({
+      const result = await Task.findAll({
         include: [
           {
-            model: Person,
+            model: Equipment,
             attributes: ['name'],
-            as: 'from',
+            as: 'target',
           },
           {
-            model: Person,
-            attributes: ['name'],
-            as: 'replyer',
-          },
-          {
-            model: MessageState,
+            model: TaskState,
             attributes: ['name'],
             as: 'state',
           },
           {
-            model: MessageType,
+            model: TaskType,
             attributes: ['name'],
             as: 'type',
           },
-          {
-            model: Equipment,
-            attributes: ['name', 'model_number'],
-            as: 'equipment_info',
-          },
         ],
         where: condition,
-        order: [['updated_at', 'DESC']],
       });
       res.status(200).json({
         code: 200,
@@ -136,7 +100,7 @@ module.exports = class MessageController {
   static async create(req, res, next) {
     try {
       console.log(req.body);
-      const result = await Message.create(req.body);
+      const result = await Task.create(req.body);
       const length = result !== null ? 1 : 0;
       res.status(201).json({
         code: 201,
@@ -152,45 +116,38 @@ module.exports = class MessageController {
   static async update(req, res, next) {
     try {
       console.log(req.body);
-      const result = await Message.update(req.body, {
+      const result = await Task.update(req.body, {
         where: { id: req.params.id },
       });
-      if (result) {
-        // 接受申请
-        if (req.body.state_id == 2) {
-          let new_state_id = 0;
-          switch (req.body.type_id) {
-            case 1: // 维修申请
-              new_state_id = 2; // 设备维修中
-              break;
-
-            case 2: // 停用申请
-              new_state_id = 3; // 设备停用中
-              break;
-
-            case 3: // 启动申请
-              new_state_id = 1; // 设备运行中
-              break;
-          }
-
-          await Equipment.update(
-            { state_id: new_state_id },
-            { where: { id: req.body.equipment_id } }
-          );
-
-          await Task.create({
-            repairman_id: req.body.from_id,
-            target_id: req.body.equipment_id,
-            state_id: 1,
-            type_id: req.body.type_id,
-          });
-        }
-
+      if (result)
         res.status(200).json({
           code: 200,
           message: `updated ${result} rows`,
         });
-      } else
+      else
+        res.status(404).json({
+          code: 404,
+          message: "such id dose't exist!",
+        });
+    } catch (err) {
+      console.error(err);
+      next(err);
+    }
+  }
+
+  static async updateState(req, res, next) {
+    try {
+      console.log(req.query.state);
+      const result = await Task.update(
+        { state_id: req.query.state },
+        { where: { id: req.params.id } }
+      );
+      if (result)
+        res.status(200).json({
+          code: 200,
+          message: `updated ${result} rows`,
+        });
+      else
         res.status(404).json({
           code: 404,
           message: "such id dose't exist!",
@@ -203,7 +160,7 @@ module.exports = class MessageController {
 
   static async delete(req, res, next) {
     try {
-      const result = await Message.destroy({
+      const result = await Task.destroy({
         where: { id: req.params.id },
       });
       if (result)

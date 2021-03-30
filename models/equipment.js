@@ -38,6 +38,12 @@ module.exports = class Equipment extends Sequelize.Model {
       as: 'equipment_info',
     });
 
+    db.Equipment.hasMany(db.Task, {
+      foreignKey: 'target_id',
+      sourceKey: 'id',
+      as: 'target',
+    });
+
     db.Equipment.belongsTo(db.EquipmentState, {
       foreignKey: 'state_id',
       targetKey: 'id',
