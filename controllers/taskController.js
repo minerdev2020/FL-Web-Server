@@ -37,17 +37,18 @@ module.exports = class TaskController {
         where: { id: req.params.id },
       });
       const length = result !== null ? 1 : 0;
-      if (result)
+      if (result) {
         res.status(200).json({
           code: 200,
           message: `selected ${length} rows`,
           data: result,
         });
-      else
+      } else {
         res.status(404).json({
           code: 404,
           message: "such id dose't exist!",
         });
+      }
     } catch (err) {
       console.error(err);
       next(err);
@@ -87,6 +88,7 @@ module.exports = class TaskController {
         where: condition,
         order: [['state_id'], ['type_id']],
       });
+
       res.status(200).json({
         code: 200,
         message: `selected ${result.length} rows`,
@@ -103,6 +105,7 @@ module.exports = class TaskController {
       console.log(req.body);
       const result = await Task.create(req.body);
       const length = result !== null ? 1 : 0;
+
       res.status(201).json({
         code: 201,
         message: `created ${length} rows`,
@@ -120,16 +123,18 @@ module.exports = class TaskController {
       const result = await Task.update(req.body, {
         where: { id: req.params.id },
       });
-      if (result)
+
+      if (result) {
         res.status(200).json({
           code: 200,
           message: `updated ${result} rows`,
         });
-      else
+      } else {
         res.status(404).json({
           code: 404,
           message: "such id dose't exist!",
         });
+      }
     } catch (err) {
       console.error(err);
       next(err);
@@ -143,16 +148,31 @@ module.exports = class TaskController {
         { state_id: req.query.state },
         { where: { id: req.params.id } }
       );
-      if (result)
+
+      if (result) {
+        // 任务已完成
+        if (req.body.state_id == 2) {
+          switch (req.body.type_id) {
+            case 3: // 启动任务
+              // 将设备状态改为运行中
+              await Equipment.update(
+                { state_id: 1 },
+                { where: { id: req.body.target_id } }
+              );
+              break;
+          }
+        }
+
         res.status(200).json({
           code: 200,
           message: `updated ${result} rows`,
         });
-      else
+      } else {
         res.status(404).json({
           code: 404,
           message: "such id dose't exist!",
         });
+      }
     } catch (err) {
       console.error(err);
       next(err);
@@ -164,16 +184,18 @@ module.exports = class TaskController {
       const result = await Task.destroy({
         where: { id: req.params.id },
       });
-      if (result)
+
+      if (result) {
         res.status(200).json({
           code: 200,
           message: `deleted ${result} rows`,
         });
-      else
+      } else {
         res.status(404).json({
           code: 404,
           message: "such id dose't exist!",
         });
+      }
     } catch (err) {
       console.error(err);
       next(err);

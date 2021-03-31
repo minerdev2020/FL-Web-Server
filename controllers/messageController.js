@@ -58,18 +58,20 @@ module.exports = class MessageController {
         ],
         where: { id: req.params.id },
       });
+
       const length = result !== null ? 1 : 0;
-      if (result)
+      if (result) {
         res.status(200).json({
           code: 200,
           message: `selected ${length} rows`,
           data: result,
         });
-      else
+      } else {
         res.status(404).json({
           code: 404,
           message: "such id dose't exist!",
         });
+      }
     } catch (err) {
       console.error(err);
       next(err);
@@ -122,6 +124,7 @@ module.exports = class MessageController {
         where: condition,
         order: [['state_id'], ['updated_at', 'DESC']],
       });
+
       res.status(200).json({
         code: 200,
         message: `selected ${result.length} rows`,
@@ -155,28 +158,27 @@ module.exports = class MessageController {
       const result = await Message.update(req.body, {
         where: { id: req.params.id },
       });
+
       if (result) {
         // 接受申请
         if (req.body.state_id == 2) {
-          let new_state_id = 0;
           switch (req.body.type_id) {
             case 1: // 维修申请
-              new_state_id = 2; // 设备维修中
+              // 将设备状态改为维修中
+              await Equipment.update(
+                { state_id: 2 },
+                { where: { id: req.body.equipment_id } }
+              );
               break;
 
             case 2: // 停用申请
-              new_state_id = 3; // 设备停用中
-              break;
-
-            case 3: // 启动申请
-              new_state_id = 1; // 设备运行中
+              // 将设备状态改为停用中
+              await Equipment.update(
+                { state_id: 3 },
+                { where: { id: req.body.equipment_id } }
+              );
               break;
           }
-
-          await Equipment.update(
-            { state_id: new_state_id },
-            { where: { id: req.body.equipment_id } }
-          );
 
           await Task.create({
             repairman_id: req.body.from_id,
@@ -190,11 +192,12 @@ module.exports = class MessageController {
           code: 200,
           message: `updated ${result} rows`,
         });
-      } else
+      } else {
         res.status(404).json({
           code: 404,
           message: "such id dose't exist!",
         });
+      }
     } catch (err) {
       console.error(err);
       next(err);
@@ -206,16 +209,18 @@ module.exports = class MessageController {
       const result = await Message.destroy({
         where: { id: req.params.id },
       });
-      if (result)
+
+      if (result) {
         res.status(200).json({
           code: 200,
           message: `deleted ${result} rows`,
         });
-      else
+      } else {
         res.status(404).json({
           code: 404,
           message: "such id dose't exist!",
         });
+      }
     } catch (err) {
       console.error(err);
       next(err);

@@ -36,18 +36,20 @@ module.exports = class SensorController {
         ],
         where: { id: req.params.id },
       });
+
       const length = result !== null ? 1 : 0;
-      if (result)
+      if (result) {
         res.status(200).json({
           code: 200,
           message: `selected ${length} rows`,
           data: result,
         });
-      else
+      } else {
         res.status(404).json({
           code: 404,
           message: "such id dose't exist!",
         });
+      }
     } catch (err) {
       console.error(err);
       next(err);
@@ -71,6 +73,7 @@ module.exports = class SensorController {
         ],
         order: [['state_id'], ['id']],
       });
+
       res.status(200).json({
         code: 200,
         message: `selected ${result.length} rows`,
@@ -104,16 +107,18 @@ module.exports = class SensorController {
       const result = await Sensor.update(req.body, {
         where: { id: req.params.id },
       });
-      if (result)
+
+      if (result) {
         res.status(200).json({
           code: 200,
           message: `updated ${result} rows`,
         });
-      else
+      } else {
         res.status(404).json({
           code: 404,
           message: "such id dose't exist!",
         });
+      }
     } catch (err) {
       console.error(err);
       next(err);
@@ -125,16 +130,18 @@ module.exports = class SensorController {
       const result = await Sensor.destroy({
         where: { id: req.params.id },
       });
-      if (result)
+
+      if (result) {
         res.status(200).json({
           code: 200,
           message: `deleted ${result} rows`,
         });
-      else
+      } else {
         res.status(404).json({
           code: 404,
           message: "such id dose't exist!",
         });
+      }
     } catch (err) {
       console.error(err);
       next(err);
