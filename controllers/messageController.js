@@ -207,8 +207,8 @@ module.exports = class MessageController {
         where: { id: req.params.id },
       });
       if (result)
-        res.status(204).json({
-          code: 204,
+        res.status(200).json({
+          code: 200,
           message: `deleted ${result} rows`,
         });
       else
