@@ -120,7 +120,7 @@ module.exports = class MessageController {
           },
         ],
         where: condition,
-        order: [['updated_at', 'DESC']],
+        order: [['state_id'], ['updated_at', 'DESC']],
       });
       res.status(200).json({
         code: 200,

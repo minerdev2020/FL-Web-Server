@@ -127,6 +127,7 @@ module.exports = class EquipmentController {
           },
         ],
         where: condition,
+        order: [['state_id'], ['type_id'], ['id']],
       });
       res.status(200).json({
         code: 200,

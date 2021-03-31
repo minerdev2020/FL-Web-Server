@@ -69,6 +69,7 @@ module.exports = class SensorController {
             as: 'type',
           },
         ],
+        order: [['state_id'], ['id']],
       });
       res.status(200).json({
         code: 200,

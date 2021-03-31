@@ -85,6 +85,7 @@ module.exports = class TaskController {
           },
         ],
         where: condition,
+        order: [['state_id'], ['type_id']],
       });
       res.status(200).json({
         code: 200,

@@ -94,6 +94,10 @@ module.exports = class PersonController {
           },
         ],
         where: condition,
+        order: [
+          ['state_id', 'DESC'],
+          ['type_id', 'DESC'],
+        ],
       });
       res.status(200).json({
         code: 200,
