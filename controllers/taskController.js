@@ -125,31 +125,6 @@ module.exports = class TaskController {
       });
 
       if (result) {
-        res.status(200).json({
-          code: 200,
-          message: `updated ${result} rows`,
-        });
-      } else {
-        res.status(404).json({
-          code: 404,
-          message: "such id dose't exist!",
-        });
-      }
-    } catch (err) {
-      console.error(err);
-      next(err);
-    }
-  }
-
-  static async updateState(req, res, next) {
-    try {
-      console.log(req.query.state);
-      const result = await Task.update(
-        { state_id: req.query.state },
-        { where: { id: req.params.id } }
-      );
-
-      if (result) {
         // 任务已完成
         if (req.body.state_id == 2) {
           switch (req.body.type_id) {
