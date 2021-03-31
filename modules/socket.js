@@ -1,4 +1,6 @@
+const path = require('path');
 const SocketIO = require('socket.io');
+const csvReader = require('./csvReader');
 
 module.exports = (server) => {
   const io = SocketIO(server);
@@ -10,7 +12,7 @@ module.exports = (server) => {
 
     socket.on('disconnect', () => {
       console.log('클라이언트 접속 해제', ip, socket.id);
-      clearInterval(socket.interval);
+      csvReader.isStop = true;
     });
 
     socket.on('error', (error) => {
@@ -18,12 +20,14 @@ module.exports = (server) => {
     });
 
     socket.on('start', (sensorId) => {
-      socket.on('stop', () => {
-        console.log('stop');
-      });
+      console.log(sensorId);
 
-      console.log('onReceived', ip, socket.id, req.ip, 'Hello Socket.IO');
-      socket.emit('onReceived', sensorId);
+      csvReader.readline(
+        path.join(__dirname, '../public/01_M01_IONGAUGEPRESSURE.csv'),
+        (record) => {
+          socket.emit('onReceived', record);
+        }
+      );
     });
   });
 };
