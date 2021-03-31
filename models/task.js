@@ -14,6 +14,7 @@ module.exports = class Task extends Sequelize.Model {
       }
     );
   }
+
   static associate(db) {
     db.Task.belongsTo(db.Person, {
       foreignKey: 'repairman_id',

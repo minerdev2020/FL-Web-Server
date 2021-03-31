@@ -126,7 +126,7 @@ module.exports = class TaskController {
 
       if (result) {
         // 任务已完成
-        if (req.body.state_id == 2) {
+        if (req.body.state_id === 2) {
           switch (req.body.type_id) {
             case 3: // 启动任务
               // 将设备状态改为运行中
@@ -134,6 +134,9 @@ module.exports = class TaskController {
                 { state_id: 1 },
                 { where: { id: req.body.target_id } }
               );
+              break;
+
+            default:
               break;
           }
         }

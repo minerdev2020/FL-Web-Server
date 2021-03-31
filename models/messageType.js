@@ -19,6 +19,7 @@ module.exports = class MessageType extends Sequelize.Model {
       }
     );
   }
+
   static associate(db) {
     db.MessageType.hasMany(db.Message, {
       foreignKey: 'type_id',

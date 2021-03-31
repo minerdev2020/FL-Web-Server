@@ -19,6 +19,7 @@ module.exports = class SensorState extends Sequelize.Model {
       }
     );
   }
+
   static associate(db) {
     db.SensorState.hasMany(db.Sensor, {
       foreignKey: 'state_id',

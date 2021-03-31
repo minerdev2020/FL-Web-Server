@@ -1,6 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
-const path = require('path');
+// const path = require('path');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const dotenv = require('dotenv');
@@ -15,46 +15,7 @@ const {
 } = require('./routes');
 
 const app = express();
-
-main();
-
-function main() {
-  init();
-
-  app.use('/api/auth', authRouter);
-  app.use('/api/persons', personRouter);
-  app.use('/api/equipments', equipmentRouter);
-  app.use('/api/sensors', sensorRouter);
-  app.use('/api/messages', messageRouter);
-  app.use('/api/tasks', taskRouter);
-
-  // 일치하는 라우터가 없을 경우
-  app.use((req, res, next) => {
-    const error = new Error(`${req.method} ${req.url} : No such router!`);
-    error.status = 404;
-    next(error);
-  });
-
-  // 모든 에러는 이 곳으로 온다
-  app.use((err, req, res, next) => {
-    res.locals.message = err.message;
-    res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
-    console.log(res.locals.message);
-    console.log(res.locals.error);
-    res.status(err.status || 500);
-    res.json({
-      code: err.status,
-      message: err.message,
-    });
-  });
-
-  const server = app.listen(app.get('port'), () => {
-    console.log(`Waiting for request in ${app.get('port')} port...`);
-  });
-
-  const webSocket = require('./modules/socket');
-  webSocket(server);
-}
+const webSocket = require('./modules/socket');
 
 function init() {
   dotenv.config();
@@ -111,3 +72,42 @@ function init() {
   //   fs.mkdirSync('public/uploads/images');
   // }
 }
+
+function main() {
+  init();
+
+  app.use('/api/auth', authRouter);
+  app.use('/api/persons', personRouter);
+  app.use('/api/equipments', equipmentRouter);
+  app.use('/api/sensors', sensorRouter);
+  app.use('/api/messages', messageRouter);
+  app.use('/api/tasks', taskRouter);
+
+  // 일치하는 라우터가 없을 경우
+  app.use((req, res, next) => {
+    const error = new Error(`${req.method} ${req.url} : No such router!`);
+    error.status = 404;
+    next(error);
+  });
+
+  // 모든 에러는 이 곳으로 온다
+  app.use((err, req, res, next) => {
+    res.locals.message = err.message;
+    res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
+    console.log(res.locals.message);
+    console.log(res.locals.error);
+    res.status(err.status || 500);
+    res.json({
+      code: err.status,
+      message: err.message,
+    });
+  });
+
+  const server = app.listen(app.get('port'), () => {
+    console.log(`Waiting for request in ${app.get('port')} port...`);
+  });
+
+  webSocket(server);
+}
+
+main();

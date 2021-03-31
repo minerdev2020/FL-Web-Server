@@ -19,6 +19,7 @@ module.exports = class TaskType extends Sequelize.Model {
       }
     );
   }
+
   static associate(db) {
     db.TaskType.hasMany(db.Task, {
       foreignKey: 'type_id',

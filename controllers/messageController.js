@@ -161,7 +161,7 @@ module.exports = class MessageController {
 
       if (result) {
         // 接受申请
-        if (req.body.state_id == 2) {
+        if (req.body.state_id === 2) {
           switch (req.body.type_id) {
             case 1: // 维修申请
               // 将设备状态改为维修中
@@ -177,6 +177,9 @@ module.exports = class MessageController {
                 { state_id: 3 },
                 { where: { id: req.body.equipment_id } }
               );
+              break;
+
+            default:
               break;
           }
 

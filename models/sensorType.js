@@ -19,6 +19,7 @@ module.exports = class SensorType extends Sequelize.Model {
       }
     );
   }
+
   static associate(db) {
     db.SensorType.hasMany(db.Sensor, {
       foreignKey: 'type_id',

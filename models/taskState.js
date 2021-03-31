@@ -19,6 +19,7 @@ module.exports = class TaskState extends Sequelize.Model {
       }
     );
   }
+
   static associate(db) {
     db.TaskState.hasMany(db.Task, {
       foreignKey: 'state_id',

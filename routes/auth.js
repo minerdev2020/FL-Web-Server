@@ -11,7 +11,7 @@ router.post('/login', async (req, res, next) => {
     if (user) {
       if (bcrypt.compareSync(req.body.user_pw, user.user_pw)) {
         const person = await Person.findOne({ where: { id: user.person_id } });
-        if (person.state_id == 2) {
+        if (person.state_id === 2) {
           return res.status(401).json({
             code: 401,
             message: 'login failed! you have already logged-in!',
@@ -34,18 +34,16 @@ router.post('/login', async (req, res, next) => {
             token: sign(user),
           },
         });
-      } else {
-        return res.status(400).json({
-          code: 400,
-          message: 'login failed! password is wrong!',
-        });
       }
-    } else {
-      return res.status(404).json({
-        code: 404,
-        message: "login failed! such user doesn't exist!",
+      return res.status(400).json({
+        code: 400,
+        message: 'login failed! password is wrong!',
       });
     }
+    return res.status(404).json({
+      code: 404,
+      message: "login failed! such user doesn't exist!",
+    });
   } catch (error) {
     console.error(error);
     return next(error);
@@ -57,7 +55,7 @@ router.post('/logout', async (req, res, next) => {
     const user = await User.findOne({ where: { user_id: req.body.user_id } });
     if (user) {
       const person = await Person.findOne({ where: { id: user.person_id } });
-      if (person.state_id == 1) {
+      if (person.state_id === 1) {
         return res.status(401).json({
           code: 401,
           message: 'logout failed! you have already logged-out!',
@@ -70,12 +68,11 @@ router.post('/logout', async (req, res, next) => {
         code: 200,
         message: 'logout succeeded!',
       });
-    } else {
-      return res.status(404).json({
-        code: 404,
-        message: "logout failed! such user doesn't exist!",
-      });
     }
+    return res.status(404).json({
+      code: 404,
+      message: "logout failed! such user doesn't exist!",
+    });
   } catch (error) {
     console.error(error);
     return next(error);

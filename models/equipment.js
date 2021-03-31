@@ -25,6 +25,7 @@ module.exports = class Equipment extends Sequelize.Model {
       }
     );
   }
+
   static associate(db) {
     db.Equipment.hasMany(db.Sensor, {
       foreignKey: 'parent_id',

@@ -25,6 +25,7 @@ module.exports = class Person extends Sequelize.Model {
       }
     );
   }
+
   static associate(db) {
     db.Person.hasOne(db.User, {
       foreignKey: 'person_id',

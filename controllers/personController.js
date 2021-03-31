@@ -1,6 +1,7 @@
-const { User, Person, PersonState, PersonType } = require('../models');
 const sequelize = require('sequelize');
-const Op = sequelize.Op;
+const { User, Person, PersonState, PersonType } = require('../models');
+
+const { Op } = sequelize;
 
 module.exports = class PersonController {
   static async showStatesAndTypes(req, res, next) {
@@ -66,7 +67,7 @@ module.exports = class PersonController {
       const condition = {};
       if (req.query.keyword) {
         condition.name = {
-          [Op.like]: '%' + req.query.keyword + '%',
+          [Op.like]: `%${req.query.keyword}%`,
         };
       }
 

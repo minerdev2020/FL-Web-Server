@@ -19,6 +19,7 @@ module.exports = class PersonType extends Sequelize.Model {
       }
     );
   }
+
   static associate(db) {
     db.PersonType.hasMany(db.Person, {
       foreignKey: 'type_id',
