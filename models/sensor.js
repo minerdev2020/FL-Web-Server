@@ -5,7 +5,7 @@ module.exports = class Sensor extends Sequelize.Model {
     return super.init(
       {
         name: {
-          type: Sequelize.STRING(20),
+          type: Sequelize.STRING(30),
           allowNull: false,
         },
         model_number: {

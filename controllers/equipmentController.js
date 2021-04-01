@@ -113,7 +113,7 @@ module.exports = class EquipmentController {
           },
           {
             model: Sensor,
-            attributes: ['name', 'model_number'],
+            attributes: ['id', 'name', 'model_number'],
             as: 'sensor_info',
             include: [
               {

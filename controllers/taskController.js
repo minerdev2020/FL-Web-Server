@@ -1,4 +1,4 @@
-const { Task, TaskState, TaskType, Equipment } = require('../models');
+const { Task, TaskState, TaskType, Equipment, Sensor } = require('../models');
 
 module.exports = class TaskController {
   static async showStatesAndTypes(req, res, next) {
@@ -133,6 +133,10 @@ module.exports = class TaskController {
               await Equipment.update(
                 { state_id: 1 },
                 { where: { id: req.body.target_id } }
+              );
+              await Sensor.update(
+                { state_id: 1 },
+                { where: { parent_id: req.body.target_id } }
               );
               break;
 

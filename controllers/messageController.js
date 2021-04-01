@@ -4,6 +4,7 @@ const {
   MessageState,
   MessageType,
   Equipment,
+  Sensor,
   Task,
 } = require('../models');
 
@@ -169,6 +170,10 @@ module.exports = class MessageController {
                 { state_id: 2 },
                 { where: { id: req.body.equipment_id } }
               );
+              await Sensor.update(
+                { state_id: 2 },
+                { where: { parent_id: req.body.equipment_id } }
+              );
               break;
 
             case 2: // 停用申请
@@ -176,6 +181,10 @@ module.exports = class MessageController {
               await Equipment.update(
                 { state_id: 3 },
                 { where: { id: req.body.equipment_id } }
+              );
+              await Sensor.update(
+                { state_id: 3 },
+                { where: { parent_id: req.body.equipment_id } }
               );
               break;
 
