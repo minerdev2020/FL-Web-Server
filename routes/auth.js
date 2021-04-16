@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const { sign } = require('../modules/v1');
 const { User, Person } = require('../models');
+const loginLog = require('../modules/loginLog');
 
 const router = express.Router();
 
@@ -22,8 +23,12 @@ router.post('/login', async (req, res, next) => {
           { ip: req.ip.split(':').pop() },
           { where: { id: user.id } }
         );
+
         await Person.update({ state_id: 2 }, { where: { id: user.person_id } });
         console.log(`client ip : ${req.ip}`);
+
+        loginLog.writeLog(user);
+
         return res.status(200).json({
           code: 200,
           message: 'login succeeded!',

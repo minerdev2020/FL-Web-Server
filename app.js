@@ -1,11 +1,13 @@
 const express = require('express');
 const morgan = require('morgan');
-// const path = require('path');
+const fs = require('fs');
+const path = require('path');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const dotenv = require('dotenv');
 const { sequelize } = require('./models');
 const authRouter = require('./routes/auth');
+const logRouter = require('./routes/log');
 const {
   personRouter,
   equipmentRouter,
@@ -50,13 +52,19 @@ function init() {
     })
   );
 
-  // const fs = require('fs');
-  // try {
-  //   fs.readdirSync('public');
-  // } catch (error) {
-  //   console.error('create uploads folder.');
-  //   fs.mkdirSync('public');
-  // }
+  try {
+    fs.readdirSync(path.join(__dirname, 'logs'));
+  } catch (error) {
+    console.error('create logs folder.');
+    fs.mkdirSync(path.join(__dirname, 'logs'));
+  }
+
+  try {
+    fs.readdirSync(path.join(__dirname, 'public'));
+  } catch (error) {
+    console.error('create public folder.');
+    fs.mkdirSync(path.join(__dirname, 'public'));
+  }
 
   // try {
   //   fs.readdirSync('public/uploads');
@@ -77,6 +85,7 @@ function main() {
   init();
 
   app.use('/api/auth', authRouter);
+  app.use('/api/logs', logRouter);
   app.use('/api/persons', personRouter);
   app.use('/api/equipments', equipmentRouter);
   app.use('/api/sensors', sensorRouter);
