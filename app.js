@@ -52,33 +52,15 @@ function init() {
     })
   );
 
-  try {
-    fs.readdirSync(path.join(__dirname, 'logs'));
-  } catch (error) {
+  if (!fs.existsSync(path.join(__dirname, 'logs'))) {
     console.error('create logs folder.');
     fs.mkdirSync(path.join(__dirname, 'logs'));
   }
 
-  try {
-    fs.readdirSync(path.join(__dirname, 'public'));
-  } catch (error) {
+  if (!fs.existsSync(path.join(__dirname, 'public'))) {
     console.error('create public folder.');
     fs.mkdirSync(path.join(__dirname, 'public'));
   }
-
-  // try {
-  //   fs.readdirSync('public/uploads');
-  // } catch (error) {
-  //   console.error('create public/uploads folder.');
-  //   fs.mkdirSync('public/uploads');
-  // }
-
-  // try {
-  //   fs.readdirSync('public/uploads/images');
-  // } catch (error) {
-  //   console.error('create public/uploads/images folder.');
-  //   fs.mkdirSync('public/uploads/images');
-  // }
 }
 
 function main() {
