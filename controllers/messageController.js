@@ -1,3 +1,4 @@
+const sequelize = require('sequelize');
 const {
   Person,
   Message,
@@ -7,6 +8,8 @@ const {
   Sensor,
   Task,
 } = require('../models');
+
+const { Op } = sequelize;
 
 module.exports = class MessageController {
   static async showStatesAndTypes(req, res, next) {
@@ -83,7 +86,22 @@ module.exports = class MessageController {
     try {
       const condition = {};
       if (req.query.keyword) {
-        condition.from_id = req.query.group1;
+        const result = await Person.findAll({
+          attributes: ['id'],
+          where: {
+            name: {
+              [Op.like]: `%${req.query.keyword}%`,
+            },
+          },
+        });
+
+        const fromIdArray = [];
+        result.forEach((element) => {
+          fromIdArray.push(element.id);
+        });
+        condition.from_id = {
+          [Op.in]: fromIdArray,
+        };
       }
 
       if (req.query.group1 > 0) {
