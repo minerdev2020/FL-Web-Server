@@ -4,6 +4,10 @@ module.exports = class Message extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
+        estimated_time: {
+          type: Sequelize.FLOAT,
+          allowNull: false,
+        },
         contents: {
           type: Sequelize.TEXT,
           allowNull: false,
