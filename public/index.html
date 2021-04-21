@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="shortcut icon" href="#">
+		<title>Chart</title>
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/modules/series-label.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<style>
+			body {
+				margin: 0;
+			}
+			.container {
+				width: 100vw;
+				height: 100vh;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container"></div>
+		<script>
+			function drawChart() {
+				return Highcharts.chart('container', {
+					chart: {
+						zoomType: 'x'
+					},
+					title: {
+						text: '차트 타이틀'
+					},						
+					yAxis: {
+						allowDecimals: false,
+						title: {
+							text: 'Value'
+						}
+					},				
+					xAxis: {
+						title: {
+							text: 'Time'
+						}
+					},						
+					series: [{
+						name: '',
+					}],
+				});
+			}
+
+			const chart = drawChart();
+
+			const socket = io.connect('http://localhost:3000');
+
+			socket.on('connect', () => {
+				console.log('hoho');
+				socket.emit('start', 1);
+			});
+
+			socket.on('onReceived', (data) => {
+				console.log(Object.values(data)[1]);
+				const shift = chart.series[0].data.length > 100;
+				chart.series[0].addPoint(Object.values(data)[1] * 100, true, shift, false);
+			});
+		</script>
+	</body>
+</html>
