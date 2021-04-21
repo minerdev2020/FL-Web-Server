@@ -92,6 +92,7 @@
     "glob-parent": "^5.1.1",
     "globals": "^12.4.0",
     "has-flag": "^4.0.0",
+    "highcharts": "^9.0.1",
     "human-signals": "^1.1.1",
     "ignore": "^4.0.6",
     "import-fresh": "^3.3.0",
