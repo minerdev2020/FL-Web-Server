@@ -12,6 +12,11 @@ module.exports = class Equipment extends Sequelize.Model {
           type: Sequelize.STRING(15),
           allowNull: false,
         },
+        booting_count: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          defaultValue: 0,
+        },
       },
       {
         sequelize,
