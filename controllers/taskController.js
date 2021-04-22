@@ -57,7 +57,7 @@ module.exports = class TaskController {
 
   static async showAll(req, res, next) {
     try {
-      const condition = { repairman_id: req.query.person_id };
+      const condition = { repairman_id: req.query.keyword };
 
       if (req.query.group1 > 0) {
         condition.state_id = req.query.group1;
