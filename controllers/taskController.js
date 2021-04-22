@@ -127,13 +127,16 @@ module.exports = class TaskController {
       if (result) {
         // 任务已完成
         if (req.body.state_id === 2) {
+          const equipment = await Equipment.findOne({
+            where: { id: req.body.target_id },
+          });
           switch (req.body.type_id) {
             case 3: // 启动任务
               // 将设备状态改为运行中
-              await Equipment.update(
-                { state_id: 1 },
-                { where: { id: req.body.target_id } }
-              );
+              equipment.update({
+                state_id: 1,
+                booting_count: equipment.booting_count + 1,
+              });
               await Sensor.update(
                 { state_id: 1 },
                 { where: { parent_id: req.body.target_id } }
