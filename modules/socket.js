@@ -22,13 +22,13 @@ module.exports = (server) => {
     });
 
     socket.on('start', async (sensorId) => {
-      console.log(sensorId, csvReader.isStop);
+      console.log(`sensor id: ${sensorId}`);
 
       const sensor = await Sensor.findOne({ where: { id: sensorId } });
 
       if (sensor) {
         csvReader.readline(
-          path.join(__dirname, `../public/01_M01_${sensor.name}.csv`),
+          path.join(__dirname, `../public/data/01_M01_${sensor.name}.csv`),
           (record) => {
             socket.emit('onReceived', record);
           }

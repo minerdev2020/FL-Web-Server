@@ -6,9 +6,9 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const dotenv = require('dotenv');
 const { sequelize } = require('./models');
-const authRouter = require('./routes/auth');
-const logRouter = require('./routes/log');
 const {
+  authRouter,
+  logRouter,
   personRouter,
   equipmentRouter,
   sensorRouter,
