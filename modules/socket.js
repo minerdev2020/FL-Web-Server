@@ -1,62 +1,39 @@
-const path = require('path');
 const SocketIO = require('socket.io');
-const Sequelize = require('sequelize');
 
-const Sensor = require('../models/sensor');
-const CsvReader = require('./csvReader');
-
-const env = process.env.NODE_ENV || 'sensor_data';
-const config = require('../config/config')[env];
-
-module.exports = (server) => {
+module.exports = (server, app) => {
   const io = SocketIO(server);
-  const sequelize = new Sequelize(
-    config.database,
-    config.username,
-    config.password,
-    config
-  );
+  app.set('io', io);
 
-  io.on('connection', async (socket) => {
-    const req = socket.request;
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    console.log('새로운 클라이언트 접속!', ip, socket.id, req.ip);
+  const persons = io.of('/persons');
+  const equipments = io.of('/equipments');
+  const sensors = io.of('/sensors');
+  const messages = io.of('/messages');
 
-    const csvReader = new CsvReader();
+  persons.on('connection', (socket) => {
+    console.log('persons connection');
     socket.on('disconnect', () => {
-      console.log('클라이언트 접속 해제', ip, socket.id);
-      csvReader.stop();
+      console.log('persons disconnect');
     });
+  });
 
-    socket.on('error', (error) => {
-      console.error(error);
+  equipments.on('connection', (socket) => {
+    console.log('equipments connection');
+    socket.on('disconnect', () => {
+      console.log('equipments disconnect');
     });
+  });
 
-    socket.on('onDateChanged', async (date) => {
-      const dateJson = JSON.parse(date);
-      console.log(dateJson);
-      const query = `${dateJson.from ? `time >= ${dateJson.from}` : '1'} AND ${
-        dateJson.to ? `time <= ${dateJson.to}` : '1'
-      }`;
-      console.log(query);
-      const record = await sequelize.query(
-        `SELECT * FROM sensor_data WHERE ${query} LIMIT 5`,
-        { raw: true, type: sequelize.QueryTypes.SELECT }
-      );
-      console.log(record);
+  sensors.on('connection', (socket) => {
+    console.log('sensors connection');
+    socket.on('disconnect', () => {
+      console.log('sensors disconnect');
     });
+  });
 
-    socket.on('start', async (sensorId) => {
-      console.log(`sensor id: ${sensorId}`);
-      const sensor = await Sensor.findOne({ where: { id: sensorId } });
-      if (sensor) {
-        csvReader.readline(
-          path.join(__dirname, `../public/data/01_M01_${sensor.name}.csv`),
-          (record) => {
-            socket.emit('onReceived', record);
-          }
-        );
-      }
+  messages.on('connection', (socket) => {
+    console.log('messages connection');
+    socket.on('disconnect', () => {
+      console.log('messages disconnect');
     });
   });
 };

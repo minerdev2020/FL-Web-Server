@@ -165,6 +165,8 @@ module.exports = class MessageController {
         message: `created ${length} rows`,
         data: result,
       });
+
+      req.app.get('io').of('/messages').emit('create');
     } catch (err) {
       console.error(err);
       next(err);
@@ -216,6 +218,9 @@ module.exports = class MessageController {
             state_id: 1,
             type_id: req.body.type_id,
           });
+
+          req.app.get('io').of('/messages').emit('update');
+          req.app.get('io').of('/equipments').emit('update');
         }
 
         res.status(200).json({
@@ -245,6 +250,8 @@ module.exports = class MessageController {
           code: 200,
           message: `deleted ${result} rows`,
         });
+
+        req.app.get('io').of('/messages').emit('delete');
       } else {
         res.status(404).json({
           code: 404,

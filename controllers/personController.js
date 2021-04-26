@@ -121,6 +121,8 @@ module.exports = class PersonController {
         message: `created ${length} rows`,
         data: result,
       });
+
+      req.app.get('io').of('/persons').emit('create');
     } catch (err) {
       console.error(err);
       next(err);
@@ -133,12 +135,14 @@ module.exports = class PersonController {
       const result = await Person.update(req.body, {
         where: { id: req.params.id },
       });
-      if (result)
+      if (result) {
         res.status(200).json({
           code: 200,
           message: `updated ${result} rows`,
         });
-      else
+
+        req.app.get('io').of('/persons').emit('update');
+      } else
         res.status(404).json({
           code: 404,
           message: "such id dose't exist!",
@@ -162,6 +166,8 @@ module.exports = class PersonController {
           code: 200,
           message: `deleted ${result} rows`,
         });
+
+        req.app.get('io').of('/persons').emit('delete');
       } else
         res.status(404).json({
           code: 404,

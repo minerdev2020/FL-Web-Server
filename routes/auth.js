@@ -29,6 +29,8 @@ router.post('/login', async (req, res, next) => {
 
         loginLog.writeLog(user);
 
+        req.app.get('io').of('/persons').emit('update');
+
         return res.status(200).json({
           code: 200,
           message: 'login succeeded!',
@@ -69,6 +71,8 @@ router.post('/logout', async (req, res, next) => {
 
       await Person.update({ state_id: 1 }, { where: { id: user.person_id } });
 
+      req.app.get('io').of('/persons').emit('update');
+
       return res.status(200).json({
         code: 200,
         message: 'logout succeeded!',
@@ -107,6 +111,9 @@ router.post('/register', async (req, res, next) => {
       person_id: person.id,
       ip: req.ip.split(':').pop(),
     });
+
+    req.app.get('io').of('/persons').emit('update');
+
     return res.status(201).json({
       code: 201,
       message: 'register succeeded!',

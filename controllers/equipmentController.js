@@ -154,6 +154,8 @@ module.exports = class EquipmentController {
         message: `created ${length} rows`,
         data: result,
       });
+
+      req.app.get('io').of('/equipments').emit('create');
     } catch (err) {
       console.error(err);
       next(err);
@@ -172,6 +174,8 @@ module.exports = class EquipmentController {
           code: 200,
           message: `updated ${result} rows`,
         });
+
+        req.app.get('io').of('/equipments').emit('update');
       } else {
         res.status(404).json({
           code: 404,
@@ -198,6 +202,8 @@ module.exports = class EquipmentController {
           code: 200,
           message: `deleted ${result} rows`,
         });
+
+        req.app.get('io').of('/equipments').emit('delete');
       } else {
         res.status(404).json({
           code: 404,

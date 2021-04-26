@@ -95,6 +95,8 @@ module.exports = class SensorController {
         message: `created ${length} rows`,
         data: result,
       });
+
+      req.app.get('io').of('/sensors').emit('create');
     } catch (err) {
       console.error(err);
       next(err);
@@ -113,6 +115,8 @@ module.exports = class SensorController {
           code: 200,
           message: `updated ${result} rows`,
         });
+
+        req.app.get('io').of('/sensors').emit('update');
       } else {
         res.status(404).json({
           code: 404,
@@ -136,6 +140,8 @@ module.exports = class SensorController {
           code: 200,
           message: `deleted ${result} rows`,
         });
+
+        req.app.get('io').of('/sensors').emit('delete');
       } else {
         res.status(404).json({
           code: 404,

@@ -98,7 +98,7 @@ function main() {
     console.log(`Waiting for request in ${app.get('port')} port...`);
   });
 
-  webSocket(server);
+  webSocket(server, app);
 }
 
 main();

@@ -146,6 +146,8 @@ module.exports = class TaskController {
             default:
               break;
           }
+
+          req.app.get('io').of('/equipments').emit('update');
         }
 
         res.status(200).json({
