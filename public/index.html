@@ -18,6 +18,7 @@
 		</style>
 	</head>
 	<body>
+		<button	id='btn' onclick='sendWarning()'>경고 발송</button>
 		<div id="container"></div>
 		<script>
 			function drawChart() {
@@ -54,7 +55,7 @@
 			const socket = io.connect();
 
 			socket.on('connect', () => {
-				console.log('hoho');
+				console.log('연결 성공');
 				socket.emit('start', 1);
 			});
 
@@ -63,6 +64,10 @@
 				const shift = chart.series[0].data.length > 100;
 				chart.series[0].addPoint(Object.values(data)[1] * 100, true, shift, false);
 			});
+
+			function sendWarning()  {
+				socket.emit('send');
+			}
 		</script>
 	</body>
 </html>

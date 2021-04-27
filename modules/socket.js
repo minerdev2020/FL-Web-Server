@@ -4,6 +4,22 @@ module.exports = (server, app) => {
   const io = SocketIO(server);
   app.set('io', io);
 
+  io.on('connection', (socket) => {
+    const req = socket.request;
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    console.log('new client:', ip.split(':').pop(), socket.id);
+
+    console.log('io connection');
+    socket.on('disconnect', () => {
+      console.log('io disconnect');
+    });
+
+    socket.on('send', () => {
+      console.log('send');
+      io.emit('warning');
+    });
+  });
+
   const persons = io.of('/persons');
   const equipments = io.of('/equipments');
   const sensors = io.of('/sensors');
