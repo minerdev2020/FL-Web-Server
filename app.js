@@ -9,6 +9,7 @@ const { sequelize } = require('./models');
 const {
   authRouter,
   logRouter,
+  alertRouter,
   personRouter,
   equipmentRouter,
   sensorRouter,
@@ -68,6 +69,7 @@ function main() {
 
   app.use('/api/auth', authRouter);
   app.use('/api/logs', logRouter);
+  app.use('/api/alerts', alertRouter);
   app.use('/api/persons', personRouter);
   app.use('/api/equipments', equipmentRouter);
   app.use('/api/sensors', sensorRouter);

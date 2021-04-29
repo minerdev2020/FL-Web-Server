@@ -38,6 +38,12 @@ module.exports = class Equipment extends Sequelize.Model {
       as: 'sensor_info',
     });
 
+    db.Equipment.hasMany(db.Alert, {
+      foreignKey: 'breakdown_id',
+      sourceKey: 'id',
+      as: 'breakdown_info',
+    });
+
     db.Equipment.hasMany(db.Message, {
       foreignKey: 'equipment_id',
       sourceKey: 'id',

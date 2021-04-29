@@ -2,6 +2,10 @@ const Sequelize = require('sequelize');
 
 const User = require('./user');
 
+const Alert = require('./alert');
+const AlertState = require('./alertState');
+const AlertType = require('./alertType');
+
 const Person = require('./person');
 const PersonState = require('./personState');
 const PersonType = require('./personType');
@@ -35,6 +39,9 @@ const sequelize = new Sequelize(
 const db = {
   sequelize,
   User,
+  Alert,
+  AlertState,
+  AlertType,
   Person,
   PersonState,
   PersonType,
@@ -53,6 +60,9 @@ const db = {
 };
 
 User.init(sequelize);
+Alert.init(sequelize);
+AlertState.init(sequelize);
+AlertType.init(sequelize);
 Person.init(sequelize);
 PersonState.init(sequelize);
 PersonType.init(sequelize);
@@ -70,6 +80,9 @@ TaskState.init(sequelize);
 TaskType.init(sequelize);
 
 User.associate(db);
+Alert.associate(db);
+AlertState.associate(db);
+AlertType.associate(db);
 Person.associate(db);
 PersonState.associate(db);
 PersonType.associate(db);

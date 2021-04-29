@@ -20,10 +20,18 @@ module.exports = (server, app) => {
     });
   });
 
+  const alerts = io.of('/alerts');
   const persons = io.of('/persons');
   const equipments = io.of('/equipments');
   const sensors = io.of('/sensors');
   const messages = io.of('/messages');
+
+  alerts.on('connection', (socket) => {
+    console.log('alerts connection');
+    socket.on('disconnect', () => {
+      console.log('alerts disconnect');
+    });
+  });
 
   persons.on('connection', (socket) => {
     console.log('persons connection');
