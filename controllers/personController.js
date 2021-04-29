@@ -79,8 +79,6 @@ module.exports = class PersonController {
         condition.type_id = req.query.group2;
       }
 
-      console.log(condition);
-
       const result = await Person.findAll({
         include: [
           {

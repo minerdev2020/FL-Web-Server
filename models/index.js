@@ -8,7 +8,7 @@ const PersonType = require('./personType');
 
 const Equipment = require('./equipment');
 const EquipmentState = require('./equipmentState');
-const EquipmentType = require('./equipmetnType');
+const EquipmentType = require('./equipmentType');
 
 const Sensor = require('./sensor');
 const SensorState = require('./sensorState');
