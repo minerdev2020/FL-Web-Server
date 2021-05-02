@@ -11,9 +11,9 @@ module.exports = class CsvReader {
   }
 
   readline(csvPath, callback) {
-    fs.access(csvPath, fs.constants.F_OK, async (error) => {
-      if (error) {
-        console.error(error);
+    fs.access(csvPath, fs.constants.F_OK, async (err) => {
+      if (err) {
+        console.error(err);
       } else {
         const stream = fs.createReadStream(csvPath);
         const parser = stream.pipe(
