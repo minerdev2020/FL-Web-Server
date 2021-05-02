@@ -27,6 +27,16 @@ module.exports = class AlertController {
       const result = await Alert.findOne({
         include: [
           {
+            model: AlertState,
+            attributes: ['name'],
+            as: 'state',
+          },
+          {
+            model: AlertType,
+            attributes: ['name'],
+            as: 'type',
+          },
+          {
             model: Equipment,
             attributes: ['name', 'model_number'],
             as: 'breakdown_info',
@@ -73,6 +83,16 @@ module.exports = class AlertController {
 
       const result = await Alert.findAll({
         include: [
+          {
+            model: AlertState,
+            attributes: ['name'],
+            as: 'state',
+          },
+          {
+            model: AlertType,
+            attributes: ['name'],
+            as: 'type',
+          },
           {
             model: Equipment,
             attributes: ['name', 'model_number'],
