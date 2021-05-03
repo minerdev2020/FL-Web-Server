@@ -46,9 +46,15 @@ module.exports = (server, app) => {
       console.log('io disconnect');
     });
 
-    socket.on('send', (data) => {
+    socket.on('send', () => {
       console.log('send');
-      sendAlert(data);
+      const test = {
+        breakdown_cause: 'create alert test',
+        breakdown_id: 1,
+        state_id: 1,
+        type_id: 1,
+      };
+      sendAlert(test);
     });
   });
 
