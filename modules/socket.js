@@ -1,8 +1,40 @@
 const SocketIO = require('socket.io');
+const { Alert, AlertState, AlertType, Equipment } = require('../models');
 
 module.exports = (server, app) => {
   const io = SocketIO(server);
   app.set('io', io);
+
+  const sendAlert = async (data) => {
+    try {
+      console.log(data);
+      const result = await Alert.create(data);
+      const sendData = await Alert.findOne({
+        include: [
+          {
+            model: AlertState,
+            attributes: ['name'],
+            as: 'state',
+          },
+          {
+            model: AlertType,
+            attributes: ['name'],
+            as: 'type',
+          },
+          {
+            model: Equipment,
+            attributes: ['name', 'model_number'],
+            as: 'breakdown_info',
+          },
+        ],
+        where: { id: result.id },
+      });
+      io.of('/alerts').emit('create');
+      io.emit('warning', sendData);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   io.on('connection', (socket) => {
     const req = socket.request;
@@ -14,9 +46,9 @@ module.exports = (server, app) => {
       console.log('io disconnect');
     });
 
-    socket.on('send', () => {
+    socket.on('send', (data) => {
       console.log('send');
-      io.emit('warning');
+      sendAlert(data);
     });
   });
 
