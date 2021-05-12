@@ -13,9 +13,6 @@ router.post('/login', async (req, res, next) => {
       if (bcrypt.compareSync(req.body.user_pw, user.user_pw)) {
         const person = await Person.findOne({ where: { id: user.person_id } });
         if (person.state_id === 2) {
-          const socketId = req.app.get('socketId');
-          req.app.get('io').to(socketId[req.body.user_id]).emit('logout');
-
           return res.status(401).json({
             code: 401,
             message: 'login failed! you have already logged-in!',
