@@ -52,7 +52,7 @@
 			const chart = drawChart();
 
 			// 서버 ip 주소가 비어있으면 처음 요청한 그 주소를 그대로 쓴다
-			const socket = io.connect();
+			const socket = io();
 
 			socket.on('connect', () => {
 				console.log('연결 성공');

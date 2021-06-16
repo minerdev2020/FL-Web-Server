@@ -100,7 +100,7 @@ module.exports = class AlertController {
           },
         ],
         where: condition,
-        order: [['state_id', 'DESC'], ['type_id'], ['id']],
+        order: [['state_id'], ['updated_at', 'DESC']],
       });
 
       res.status(200).json({
@@ -138,6 +138,37 @@ module.exports = class AlertController {
       const result = await Alert.update(req.body, {
         where: { id: req.params.id },
       });
+
+      if (result) {
+        res.status(200).json({
+          code: 200,
+          message: `updated ${result} rows`,
+        });
+
+        req.app.get('io').of('/alerts').emit('update');
+      } else {
+        res.status(404).json({
+          code: 404,
+          message: "such id dose't exist!",
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      next(err);
+    }
+  }
+
+  static async updateState(req, res, next) {
+    try {
+      console.log(req.body);
+      const result = await Alert.update(
+        {
+          state_id: req.query.state,
+        },
+        {
+          where: { id: req.params.id },
+        }
+      );
 
       if (result) {
         res.status(200).json({
