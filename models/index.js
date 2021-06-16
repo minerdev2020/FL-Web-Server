@@ -18,9 +18,9 @@ const Sensor = require('./sensor');
 const SensorState = require('./sensorState');
 const SensorType = require('./sensorType');
 
-const Message = require('./message');
-const MessageState = require('./messageState');
-const MessageType = require('./messageType');
+const Request = require('./request');
+const RequestState = require('./requestState');
+const RequestType = require('./requestType');
 
 const Task = require('./task');
 const TaskState = require('./taskState');
@@ -51,9 +51,9 @@ const db = {
   Sensor,
   SensorState,
   SensorType,
-  Message,
-  MessageState,
-  MessageType,
+  Request,
+  RequestState,
+  RequestType,
   Task,
   TaskState,
   TaskType,
@@ -72,9 +72,9 @@ EquipmentType.init(sequelize);
 Sensor.init(sequelize);
 SensorState.init(sequelize);
 SensorType.init(sequelize);
-Message.init(sequelize);
-MessageState.init(sequelize);
-MessageType.init(sequelize);
+Request.init(sequelize);
+RequestState.init(sequelize);
+RequestType.init(sequelize);
 Task.init(sequelize);
 TaskState.init(sequelize);
 TaskType.init(sequelize);
@@ -92,9 +92,9 @@ EquipmentType.associate(db);
 Sensor.associate(db);
 SensorState.associate(db);
 SensorType.associate(db);
-Message.associate(db);
-MessageState.associate(db);
-MessageType.associate(db);
+Request.associate(db);
+RequestState.associate(db);
+RequestType.associate(db);
 Task.associate(db);
 TaskState.associate(db);
 TaskType.associate(db);

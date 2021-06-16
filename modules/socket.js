@@ -62,7 +62,7 @@ module.exports = (server, app) => {
   const persons = io.of('/persons');
   const equipments = io.of('/equipments');
   const sensors = io.of('/sensors');
-  const messages = io.of('/messages');
+  const requests = io.of('/requests');
 
   alerts.on('connection', (socket) => {
     console.log('alerts connection');
@@ -92,10 +92,10 @@ module.exports = (server, app) => {
     });
   });
 
-  messages.on('connection', (socket) => {
-    console.log('messages connection');
+  requests.on('connection', (socket) => {
+    console.log('requests connection');
     socket.on('disconnect', () => {
-      console.log('messages disconnect');
+      console.log('requests disconnect');
     });
   });
 };

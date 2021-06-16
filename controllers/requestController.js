@@ -1,9 +1,9 @@
 const sequelize = require('sequelize');
 const {
   Person,
-  Message,
-  MessageState,
-  MessageType,
+  Request,
+  RequestState,
+  RequestType,
   Equipment,
   Sensor,
   Task,
@@ -11,11 +11,11 @@ const {
 
 const { Op } = sequelize;
 
-module.exports = class MessageController {
+module.exports = class RequestController {
   static async showStatesAndTypes(req, res, next) {
     try {
-      const states = await MessageState.findAll({});
-      const types = await MessageType.findAll({});
+      const states = await RequestState.findAll({});
+      const types = await RequestType.findAll({});
       res.status(200).json({
         code: 200,
         message: `selected ${states.length + types.length} rows`,
@@ -32,7 +32,7 @@ module.exports = class MessageController {
 
   static async show(req, res, next) {
     try {
-      const result = await Message.findOne({
+      const result = await Request.findOne({
         include: [
           {
             model: Person,
@@ -45,12 +45,12 @@ module.exports = class MessageController {
             as: 'replyer',
           },
           {
-            model: MessageState,
+            model: RequestState,
             attributes: ['name'],
             as: 'state',
           },
           {
-            model: MessageType,
+            model: RequestType,
             attributes: ['name'],
             as: 'type',
           },
@@ -112,7 +112,7 @@ module.exports = class MessageController {
         condition.type_id = req.query.group2;
       }
 
-      const result = await Message.findAll({
+      const result = await Request.findAll({
         include: [
           {
             model: Person,
@@ -125,12 +125,12 @@ module.exports = class MessageController {
             as: 'replyer',
           },
           {
-            model: MessageState,
+            model: RequestState,
             attributes: ['name'],
             as: 'state',
           },
           {
-            model: MessageType,
+            model: RequestType,
             attributes: ['name'],
             as: 'type',
           },
@@ -158,7 +158,7 @@ module.exports = class MessageController {
   static async create(req, res, next) {
     try {
       console.log(req.body);
-      const result = await Message.create(req.body);
+      const result = await Request.create(req.body);
       const length = result !== null ? 1 : 0;
       res.status(201).json({
         code: 201,
@@ -176,9 +176,11 @@ module.exports = class MessageController {
   static async update(req, res, next) {
     try {
       console.log(req.body);
-      const result = await Message.update(req.body, {
+      const result = await Request.update(req.body, {
         where: { id: req.params.id },
       });
+
+      req.app.get('io').of('/requests').emit('update');
 
       if (result) {
         // 接受申请
@@ -219,7 +221,6 @@ module.exports = class MessageController {
             type_id: req.body.type_id,
           });
 
-          req.app.get('io').of('/messages').emit('update');
           req.app.get('io').of('/equipments').emit('update');
         }
 
@@ -241,7 +242,7 @@ module.exports = class MessageController {
 
   static async delete(req, res, next) {
     try {
-      const result = await Message.destroy({
+      const result = await Request.destroy({
         where: { id: req.params.id },
       });
 

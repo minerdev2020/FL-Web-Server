@@ -5,7 +5,7 @@ const alertRouter = require('./alert');
 const personRouter = require('./person');
 const equipmentRouter = require('./equipment');
 const sensorRouter = require('./sensor');
-const messageRouter = require('./message');
+const requestRouter = require('./request');
 const taskRouter = require('./task');
 
 module.exports = {
@@ -15,6 +15,6 @@ module.exports = {
   personRouter,
   equipmentRouter,
   sensorRouter,
-  messageRouter,
+  requestRouter,
   taskRouter,
 };

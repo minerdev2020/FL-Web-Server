@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-module.exports = class Message extends Sequelize.Model {
+module.exports = class Request extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
@@ -25,31 +25,31 @@ module.exports = class Message extends Sequelize.Model {
   }
 
   static associate(db) {
-    db.Message.belongsTo(db.Equipment, {
+    db.Request.belongsTo(db.Equipment, {
       foreignKey: 'equipment_id',
       targetKey: 'id',
       as: 'equipment_info',
     });
 
-    db.Message.belongsTo(db.Person, {
+    db.Request.belongsTo(db.Person, {
       foreignKey: 'from_id',
       targetKey: 'id',
       as: 'from',
     });
 
-    db.Message.belongsTo(db.Person, {
+    db.Request.belongsTo(db.Person, {
       foreignKey: 'reply_id',
       targetKey: 'id',
       as: 'replyer',
     });
 
-    db.Message.belongsTo(db.MessageState, {
+    db.Request.belongsTo(db.RequestState, {
       foreignKey: 'state_id',
       targetKey: 'id',
       as: 'state',
     });
 
-    db.Message.belongsTo(db.MessageType, {
+    db.Request.belongsTo(db.RequestType, {
       foreignKey: 'type_id',
       targetKey: 'id',
       as: 'type',

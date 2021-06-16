@@ -33,13 +33,13 @@ module.exports = class Person extends Sequelize.Model {
       as: 'user_info',
     });
 
-    db.Person.hasMany(db.Message, {
+    db.Person.hasMany(db.Request, {
       foreignKey: 'from_id',
       sourceKey: 'id',
       as: 'from',
     });
 
-    db.Person.hasMany(db.Message, {
+    db.Person.hasMany(db.Request, {
       foreignKey: 'reply_id',
       sourceKey: 'id',
       as: 'replyer',

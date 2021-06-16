@@ -1,16 +1,16 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert(
-      'message_states',
+      'request_types',
       [
         {
-          name: '等待中',
+          name: '维修申请',
         },
         {
-          name: '已接受',
+          name: '停用申请',
         },
         {
-          name: '已拒绝',
+          name: '启动申请',
         },
       ],
       {}
@@ -18,6 +18,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('message_states', null, {});
+    await queryInterface.bulkDelete('request_types', null, {});
   },
 };

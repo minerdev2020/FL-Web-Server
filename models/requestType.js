@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-module.exports = class MessageState extends Sequelize.Model {
+module.exports = class RequestType extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
@@ -21,10 +21,10 @@ module.exports = class MessageState extends Sequelize.Model {
   }
 
   static associate(db) {
-    db.MessageState.hasMany(db.Message, {
-      foreignKey: 'state_id',
+    db.RequestType.hasMany(db.Request, {
+      foreignKey: 'type_id',
       targetKey: 'id',
-      as: 'state',
+      as: 'type',
     });
   }
 };

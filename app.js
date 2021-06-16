@@ -13,7 +13,7 @@ const {
   personRouter,
   equipmentRouter,
   sensorRouter,
-  messageRouter,
+  requestRouter,
   taskRouter,
 } = require('./routes');
 
@@ -74,7 +74,7 @@ function main() {
   app.use('/api/persons', personRouter);
   app.use('/api/equipments', equipmentRouter);
   app.use('/api/sensors', sensorRouter);
-  app.use('/api/messages', messageRouter);
+  app.use('/api/requests', requestRouter);
   app.use('/api/tasks', taskRouter);
 
   // 일치하는 라우터가 없을 경우
