@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const dotenv = require('dotenv');
 const { sequelize } = require('./models');
+const core = require('./modules/core');
 const {
   authRouter,
   logRouter,
@@ -102,6 +103,7 @@ function main() {
   });
 
   webSocket(server, app);
+  core(app);
 }
 
 main();
